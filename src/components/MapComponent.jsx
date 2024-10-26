@@ -72,7 +72,7 @@ const MapComponent = ({ updateKey }) => {
           {plants.map((plant) => (
             <Marker key={plant.id} position={[plant.latitude, plant.longitude]}>
               <Popup>
-                <div className="bg-white shadow-lg rounded-lg p-6 max-w-sm">
+                <div className="bg-white shadow-lg rounded-lg p-6 max-w-sm overflow-auto">
                   <h3 className="text-3xl font-bold mb-2">{plant.name}</h3>
                   <p className="text-gray-700 mb-1">
                     <strong>Type:</strong> {plant.type}
