@@ -1,7 +1,8 @@
-// src/components/UpdatePlant.jsx
 import React, { useState } from "react";
 import { db } from "../services/firebaseConfig";
-import { doc, updateDoc, getDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const UpdatePlant = () => {
   const [searchParams, setSearchParams] = useState({
@@ -10,37 +11,56 @@ const UpdatePlant = () => {
   });
   const [plantData, setPlantData] = useState(null);
   const [updatedFields, setUpdatedFields] = useState({});
+  const [image, setImage] = useState(null); // State to hold the uploaded image
 
-  // Handle changes for searching a plant by zone and plant number
   const handleSearchInputChange = (e) => {
     setSearchParams({ ...searchParams, [e.target.name]: e.target.value });
   };
 
-  // Handle changes for fields to be updated
   const handleUpdateInputChange = (e) => {
-    setUpdatedFields({ ...updatedFields, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setUpdatedFields({ ...updatedFields, [name]: value });
+    setPlantData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Fetch the plant based on zone and plant number
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) setImage(file);
+  };
+
   const fetchPlant = async () => {
+    console.log(
+      "Searching for plant with Zone:",
+      searchParams.zone,
+      "and Plant Number:",
+      searchParams.plantNumber
+    );
+
     try {
-      const plantRef = doc(
-        db,
-        "plants",
-        `${searchParams.zone}-${searchParams.plantNumber}`
+      // Query the collection to find a document with matching zone and plantNumber fields
+      const plantsRef = collection(db, "plants");
+      const plantQuery = query(
+        plantsRef,
+        where("zone", "==", searchParams.zone),
+        where("plantNumber", "==", searchParams.plantNumber)
       );
-      const plantDoc = await getDoc(plantRef);
-      if (plantDoc.exists()) {
+
+      const querySnapshot = await getDocs(plantQuery);
+      if (!querySnapshot.empty) {
+        // Assuming there is only one matching document
+        const plantDoc = querySnapshot.docs[0];
+        console.log("Plant data fetched:", plantDoc.data()); // Log fetched data
         setPlantData(plantDoc.data());
       } else {
+        console.warn("No plant found with the provided zone and plant number.");
         alert("Plant not found.");
       }
     } catch (error) {
       console.error("Error fetching plant:", error);
+      alert("Error fetching plant. Please check the console for details.");
     }
   };
 
-  // Update the specified fields of the plant
   const handleUpdate = async () => {
     try {
       const plantRef = doc(
@@ -48,7 +68,18 @@ const UpdatePlant = () => {
         "plants",
         `${searchParams.zone}-${searchParams.plantNumber}`
       );
+
+      // Update plant data in Firestore
       await updateDoc(plantRef, updatedFields);
+
+      // Handle image upload if an image is provided
+      if (image) {
+        const imageRef = ref(storage, `plants/${plantRef.id}`);
+        await uploadBytes(imageRef, image);
+        const imageUrl = await getDownloadURL(imageRef);
+        await updateDoc(plantRef, { imageUrl });
+      }
+
       alert("Plant updated successfully!");
     } catch (error) {
       console.error("Error updating plant:", error);
@@ -101,15 +132,6 @@ const UpdatePlant = () => {
               onChange={handleUpdateInputChange}
               className="mb-4 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
-
-            <input
-              type="text"
-              name="type"
-              placeholder="Plant Type"
-              defaultValue={plantData.type}
-              onChange={handleUpdateInputChange}
-              className="mb-4 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
             <input
               type="text"
               name="plantNumber"
@@ -119,6 +141,16 @@ const UpdatePlant = () => {
               required
               className="p-2 border rounded"
             />
+
+            <input
+              type="text"
+              name="type"
+              placeholder="Plant Type"
+              defaultValue={plantData.type}
+              onChange={handleUpdateInputChange}
+              className="mb-4 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+
             <input
               type="text"
               name="height"
@@ -129,7 +161,7 @@ const UpdatePlant = () => {
               className="p-2 border rounded"
             />
             <input
-              type="number"
+              type="text"
               name="latitude"
               placeholder="Latitude"
               value={plantData.latitude}
@@ -138,7 +170,7 @@ const UpdatePlant = () => {
               className="p-2 border rounded"
             />
             <input
-              type="number"
+              type="text"
               name="longitude"
               placeholder="Longitude"
               value={plantData.longitude}
