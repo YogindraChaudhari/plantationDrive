@@ -1,14 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
+import { ToastContainer, toast } from "react-toastify";
 import { Link } from "react-router-dom"; // Import Link
 import MapComponent from "../components/MapComponent";
-import RegisterPlant from "../components/RegisterPlant";
-import UpdatePlant from "../components/UpdatePlant";
-import DeletePlant from "../components/DeletePlant";
 
 const HomeScreen = () => {
+  const { username } = useAuth();
+
+  useEffect(() => {
+    if (username) {
+      toast.info(`Welcome, ${username}!`);
+    }
+  }, [username]);
+
   return (
     <div className="container mx-auto p-8">
-      <h1 className="text-3xl font-bold text-center mb-6">Regional Map</h1>
+      <h1 className="text-3xl font-bold text-center mb-6 text-green-800">
+        Welcome to the Plant Tracker App
+      </h1>
+      <p className="text-md text-center text-gray-900 text-lg mb-8">
+        Use this app to track, register, and update information on various
+        plants around you.
+      </p>
+      <ToastContainer />
       <div className="flex justify-center gap-4 mb-8">
         {/* Replace buttons with Link components */}
         <Link to="/register-plant">
@@ -28,12 +42,6 @@ const HomeScreen = () => {
         </Link>
       </div>
       <MapComponent />
-      {/* <div className="mt-8 space-y-4">
-        Optionally remove these components since you have separate routes now 
-        <RegisterPlant />
-        <UpdatePlant />
-        <DeletePlant />
-      </div> */}
     </div>
   );
 };

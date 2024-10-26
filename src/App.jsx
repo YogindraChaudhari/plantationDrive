@@ -95,9 +95,34 @@ function AppContent() {
             </PrivateRoute>
           }
         />
-        <Route path="/register-plant" element={<RegisterPlant />} />
+        <Route
+          path="/register-plant"
+          element={
+            <PrivateRoute>
+              <RegisterPlant />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/update-plant"
+          element={
+            <PrivateRoute>
+              <UpdatePlant />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/delete-plant"
+          element={
+            <PrivateRoute>
+              <DeletePlant />
+            </PrivateRoute>
+          }
+        />
+        <Route path="*" element={<Navigate to="/" />} />
+        {/* <Route path="/register-plant" element={<RegisterPlant />} />
         <Route path="/update-plant" element={<UpdatePlant />} />
-        <Route path="/delete-plant" element={<DeletePlant />} />
+        <Route path="/delete-plant" element={<DeletePlant />} /> */}
       </Routes>
     </>
   );

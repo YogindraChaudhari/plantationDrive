@@ -95,6 +95,8 @@ import { useNavigate } from "react-router-dom";
 import { FaUser, FaEnvelope, FaLock } from "react-icons/fa";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import bgImage from "../assets/backgroundImage.jpg";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AuthScreen = () => {
   const { login, register } = useAuth();
@@ -104,21 +106,24 @@ const AuthScreen = () => {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [error, setError] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // State for showing password
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleAuth = async (e) => {
     e.preventDefault();
     try {
       if (isRegister) {
-        await register(email, password);
+        await register(email, password, username); // Pass username during registration
+        toast.success("Registration successful!");
         navigate("/");
       } else {
         await login(email, password);
+        toast.success("Login successful!");
         navigate("/");
       }
     } catch (error) {
-      setError(error.message); // Set the error message
+      setError(error.message);
       console.error("Authentication Error:", error.message);
+      toast.error("Invalid credentials");
     }
   };
 
@@ -196,6 +201,7 @@ const AuthScreen = () => {
           </button>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 };

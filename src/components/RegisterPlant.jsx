@@ -268,95 +268,163 @@ const RegisterPlant = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="max-w-md mx-auto p-4 border rounded-lg shadow-md bg-white">
-        <h3 className="text-xl font-semibold mb-4 text-center">
-          Register Plant Information
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-green-200 to-blue-300 p-6">
+      <div className="w-full max-w-lg mx-auto p-8 border rounded-lg shadow-xl bg-white">
+        <h3 className="text-2xl font-bold text-center text-gray-800 mb-6">
+          Register New Plant
         </h3>
-        {error && <p className="text-red-500">{error}</p>}
-        <form
-          onSubmit={handleRegister}
-          className="flex flex-col p-4 space-y-4 bg-white rounded shadow-md"
-        >
-          <input
-            type="text"
-            name="name"
-            placeholder="Plant Name"
-            value={plantData.name}
-            onChange={handleInputChange}
-            required
-            className="p-2 border rounded"
-          />
-          <input
-            type="text"
-            name="plantNumber"
-            placeholder="Plant Number"
-            value={plantData.plantNumber}
-            onChange={handleInputChange}
-            required
-            className="p-2 border rounded"
-          />
-          <input
-            type="text"
-            name="type"
-            placeholder="Type of Plant"
-            value={plantData.type}
-            onChange={handleInputChange}
-            required
-            className="p-2 border rounded"
-          />
-          <input
-            type="text"
-            name="height"
-            placeholder="Height (in ft/cm)"
-            value={plantData.height}
-            onChange={handleInputChange}
-            required
-            className="p-2 border rounded"
-          />
-          <input
-            type="text"
-            name="latitude"
-            placeholder="Latitude"
-            value={plantData.latitude}
-            onChange={handleInputChange}
-            required
-            className="p-2 border rounded"
-          />
-          <input
-            type="text"
-            name="longitude"
-            placeholder="Longitude"
-            value={plantData.longitude}
-            onChange={handleInputChange}
-            required
-            className="p-2 border rounded"
-          />
-          <select
-            name="health"
-            value={plantData.health}
-            onChange={handleInputChange}
-            className="p-2 border rounded"
+        {error && <p className="text-red-500 mb-4">{error}</p>}
+        <form onSubmit={handleRegister} className="space-y-4">
+          {/* Plant Name */}
+          <div>
+            <label className="block text-gray-600 font-medium">
+              Plant Name
+            </label>
+            <input
+              type="text"
+              name="name"
+              placeholder="Enter plant name"
+              value={plantData.name}
+              onChange={handleInputChange}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              required
+            />
+          </div>
+
+          {/* Plant Number */}
+          <div>
+            <label className="block text-gray-600 font-medium">
+              Plant Number
+            </label>
+            <input
+              type="text"
+              name="plantNumber"
+              placeholder="Enter plant number"
+              value={plantData.plantNumber}
+              onChange={handleInputChange}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              required
+            />
+          </div>
+
+          {/* Type */}
+          <div>
+            <label className="block text-gray-600 font-medium">
+              Type of Plant
+            </label>
+            <input
+              type="text"
+              name="type"
+              placeholder="Enter type of plant"
+              value={plantData.type}
+              onChange={handleInputChange}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              required
+            />
+          </div>
+
+          {/* Height */}
+          <div>
+            <label className="block text-gray-600 font-medium">
+              Height (ft/cm)
+            </label>
+            <input
+              type="text"
+              name="height"
+              placeholder="Enter height"
+              value={plantData.height}
+              onChange={handleInputChange}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              required
+            />
+          </div>
+
+          {/* Latitude */}
+          <div>
+            <label className="block text-gray-600 font-medium">
+              Latitude (DMS)
+            </label>
+            <input
+              type="text"
+              name="latitude"
+              placeholder="Latitude"
+              value={plantData.latitude}
+              onChange={handleInputChange}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              required
+            />
+          </div>
+
+          {/* Longitude */}
+          <div>
+            <label className="block text-gray-600 font-medium">
+              Longitude (DMS)
+            </label>
+            <input
+              type="text"
+              name="longitude"
+              placeholder="Longitude"
+              value={plantData.longitude}
+              onChange={handleInputChange}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              required
+            />
+          </div>
+
+          {/* Health */}
+          <div>
+            <label className="block text-gray-600 font-medium">
+              Health Status
+            </label>
+            <select
+              name="health"
+              value={plantData.health}
+              onChange={handleInputChange}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            >
+              <option value="good">Good</option>
+              <option value="deceased">Deceased</option>
+              <option value="infected">Infected</option>
+            </select>
+          </div>
+
+          {/* Zone */}
+          <div>
+            <label className="block text-gray-600 font-medium">Zone</label>
+            <input
+              type="text"
+              name="zone"
+              placeholder="Enter zone"
+              value={plantData.zone}
+              onChange={handleInputChange}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              required
+            />
+          </div>
+
+          {/* Image Upload */}
+          <div className="flex flex-col">
+            <label className="mb-1 font-semibold">Upload Plant Image</label>
+            <input
+              type="file"
+              id="fileInput"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="hidden"
+            />
+            <label
+              htmlFor="fileInput"
+              className="p-3 border border-dashed rounded-lg cursor-pointer text-center bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            >
+              {image ? image.name : "Choose File"}
+            </label>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full py-3 text-white font-semibold bg-green-600 rounded-lg hover:bg-green-700 transition duration-200"
           >
-            <option value="good">Good</option>
-            <option value="deceased">Deceased</option>
-            <option value="infected">Infected</option>
-          </select>
-          <input
-            type="text"
-            name="zone"
-            placeholder="Zone"
-            value={plantData.zone}
-            onChange={handleInputChange}
-            required
-            className="p-2 border rounded"
-          />
-          <input
-            type="file"
-            onChange={handleImageUpload}
-            className="p-2 border rounded"
-          />
-          <button type="submit" className="p-2 text-white bg-blue-500 rounded">
             Register Plant
           </button>
         </form>
