@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
 import { Link } from "react-router-dom";
@@ -6,12 +6,33 @@ import MapComponent from "../components/MapComponent";
 
 const HomeScreen = () => {
   const { username } = useAuth();
+  const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
     if (username) {
       toast.info(`Welcome, ${username}!`);
     }
+
+    // Scroll listener for showing the "Back to Top" button
+    const handleScroll = () => {
+      if (window.scrollY > 300) {
+        setShowBackToTop(true);
+      } else {
+        setShowBackToTop(false);
+      }
+    };
+
+    // Attach the event listener
+    window.addEventListener("scroll", handleScroll);
+
+    // Clean up the event listener on component unmount
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [username]);
+
+  // Scroll to top function
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <div className="container mx-auto p-8">
@@ -26,7 +47,6 @@ const HomeScreen = () => {
 
       {/* Button Container */}
       <div className="flex flex-wrap justify-center gap-4 mb-8 overflow-x-auto font-bold">
-        {/* Replace buttons with Link components */}
         <Link to="/zone-wise-plant-details">
           <button className="bg-violet-500 m-3 p-3 hover:bg-violet-600 text-white rounded-xl min-w-[120px]">
             Zone Wise Plant Details
@@ -53,6 +73,17 @@ const HomeScreen = () => {
       <div className="overflow-hidden md:overflow-auto">
         <MapComponent />
       </div>
+
+      {/* Back to Top Button for Mobile View */}
+      {showBackToTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-4 right-4 p-3 font-bold bg-green-500 text-white rounded-full shadow-lg focus:outline-none md:hidden"
+          style={{ zIndex: 1000 }}
+        >
+          ↑ Back To Top
+        </button>
+      )}
     </div>
   );
 };
