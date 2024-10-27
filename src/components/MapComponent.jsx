@@ -64,7 +64,7 @@ const MapComponent = ({ updateKey }) => {
     <div className="flex flex-col h-screen">
       <div className="flex-grow">
         <MapContainer
-          center={[19.0, 73.0]}
+          center={[19.1, 73.1]}
           zoom={10}
           style={{ height: "100%" }}
         >

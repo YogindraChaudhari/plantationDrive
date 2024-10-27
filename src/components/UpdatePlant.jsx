@@ -52,7 +52,7 @@ const UpdatePlant = () => {
       if (!querySnapshot.empty) {
         const plantDoc = querySnapshot.docs[0];
         // console.log("Plant data fetched:", plantDoc.data());
-        toast.success("Plant data successfully");
+        toast.success("Plant data fetched successfully");
         setPlantData(plantDoc.data());
         setUpdatedFields(plantDoc.data()); // Populate updatedFields with the fetched data
         setPlantDocId(plantDoc.id); // Save the document ID

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { ToastContainer, toast } from "react-toastify";
-import { Link } from "react-router-dom"; // Import Link
+import { Link } from "react-router-dom";
 import MapComponent from "../components/MapComponent";
 
 const HomeScreen = () => {
@@ -23,30 +23,36 @@ const HomeScreen = () => {
         plants around you.
       </p>
       <ToastContainer />
-      <div className="flex justify-center gap-4 mb-8">
+      
+      {/* Button Container */}
+      <div className="flex flex-wrap justify-center gap-4 mb-8 overflow-x-auto">
         {/* Replace buttons with Link components */}
         <Link to="/zone-wise-plant-details">
-          <button className="bg-violet-500 hover:bg-violet-600 text-white p-2 rounded">
+          <button className="bg-violet-500 hover:bg-violet-600 text-white p-2 rounded min-w-[120px]">
             Zone Wise Plant Details
           </button>
         </Link>
         <Link to="/register-plant">
-          <button className="bg-green-500 hover:bg-green-600 text-white p-2 rounded">
+          <button className="bg-green-500 hover:bg-green-600 text-white p-2 rounded min-w-[120px]">
             Register Plant
           </button>
         </Link>
         <Link to="/update-plant">
-          <button className="bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded">
+          <button className="bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded min-w-[120px]">
             Update Plant
           </button>
         </Link>
         <Link to="/delete-plant">
-          <button className="bg-red-500 hover:bg-red-600 text-white p-2 rounded">
+          <button className="bg-red-500 hover:bg-red-600 text-white p-2 rounded min-w-[120px]">
             Delete Plant
           </button>
         </Link>
       </div>
-      <MapComponent />
+      
+      {/* Map Component */}
+      <div className="overflow-hidden md:overflow-auto">
+        <MapComponent />
+      </div>
     </div>
   );
 };

@@ -37,13 +37,13 @@ const ZoneWisePlants = () => {
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-gradient-to-b from-white to-green-300 p-6">
-      <h1 className="text-2xl font-semibold mb-4">Plants by Zone</h1>
+      <h1 className="text-2xl font-bold mb-4">Plants by Zone</h1>
       <div className="mb-4">
         {Object.keys(plantsByZone).map((zone) => (
           <button
             key={zone}
             onClick={() => handleZoneClick(zone)}
-            className="m-2 p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="m-3 p-3 font-bold bg-blue-800 text-white rounded-xl hover:bg-blue-600"
           >
             Zone {zone}
           </button>
@@ -66,7 +66,7 @@ const ZoneWisePlants = () => {
           </ol>
           <button
             onClick={() => setSelectedZone(null)}
-            className="mt-4 p-2 bg-red-500 text-white rounded hover:bg-red-600"
+            className="mt-4 p-3 font-bold bg-red-500 text-white rounded-xl hover:bg-red-600"
           >
             Back to Zones
           </button>
