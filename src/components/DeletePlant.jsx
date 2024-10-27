@@ -1,4 +1,3 @@
-// DeletePlant.jsx
 import React, { useState } from "react";
 import { db, storage } from "../services/firebaseConfig";
 import { doc, deleteDoc } from "firebase/firestore";
@@ -12,9 +11,15 @@ const DeletePlant = ({ onDeleteSuccess }) => {
   const [plantName, setPlantName] = useState("");
 
   const handleDelete = async () => {
+    const plantId = `${zone}-${plantNumber}`;
+    const plantRef = doc(db, "plants", plantId);
     try {
-      const plantId = `${zone}-${plantNumber}`;
-      const plantRef = doc(db, "plants", plantId);
+      // Check if the plant document exists
+      const plantDoc = await getDoc(plantRef);
+      if (!plantDoc.exists()) {
+        toast.error("Plant not found. Please check the zone and plant number.");
+        return;
+      }
 
       // Reference to the plant image in storage
       const imageRef = ref(storage, `plants/${plantId}`);
@@ -29,6 +34,7 @@ const DeletePlant = ({ onDeleteSuccess }) => {
     } catch (error) {
       console.error("Error deleting plant:", error);
       toast.error("Failed to delete plant.");
+      toast.error("Please check details again.");
     }
   };
 
