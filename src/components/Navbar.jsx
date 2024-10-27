@@ -16,7 +16,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-gradient-to-r from-green-500 via-green-600 to-green-700 text-white py-4 shadow-md">
+    <nav className="bg-gradient-to-r from-green-500 via-green-600 to-green-700 text-white font-bold py-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center px-6">
         {/* Logo */}
         <Link
@@ -71,7 +71,7 @@ const Navbar = () => {
           <div className="relative">
             <button
               onClick={toggleDropdown}
-              className="flex items-center hover:text-gray-100 transition duration-200 focus:outline-none"
+              className="flex items-center rounded-xl hover:text-gray-100 transition duration-200 focus:outline-none"
             >
               Services
               <svg
@@ -90,7 +90,7 @@ const Navbar = () => {
               </svg>
             </button>
             {dropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg text-gray-800 z-10">
+              <div className="absolute text-center right-0 mt-2 w-48 bg-white rounded-lg shadow-lg text-gray-800 z-10">
                 <Link
                   to="/register-plant"
                   className="block px-4 py-2 hover:bg-green-100"
@@ -127,7 +127,7 @@ const Navbar = () => {
 
           <Link
             to="/zone-wise-plant-details"
-            className="bg-violet-500 px-4 py-2 rounded-md hover:bg-violet-600 transition duration-200"
+            className="bg-violet-500 px-4 py-2 rounded-xl hover:bg-violet-600 transition duration-200"
           >
             Zone Wise Plant Details
           </Link>
@@ -135,7 +135,7 @@ const Navbar = () => {
           {/* Logout Button */}
           <button
             onClick={logout}
-            className="bg-red-500 px-4 py-2 rounded-md hover:bg-red-600 transition duration-200"
+            className="bg-red-500 px-4 py-2 rounded-xl hover:bg-red-600 transition duration-200"
           >
             Logout
           </button>

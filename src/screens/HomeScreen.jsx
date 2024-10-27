@@ -23,32 +23,32 @@ const HomeScreen = () => {
         plants around you.
       </p>
       <ToastContainer />
-      
+
       {/* Button Container */}
-      <div className="flex flex-wrap justify-center gap-4 mb-8 overflow-x-auto">
+      <div className="flex flex-wrap justify-center gap-4 mb-8 overflow-x-auto font-bold">
         {/* Replace buttons with Link components */}
         <Link to="/zone-wise-plant-details">
-          <button className="bg-violet-500 hover:bg-violet-600 text-white p-2 rounded min-w-[120px]">
+          <button className="bg-violet-500 m-3 p-3 hover:bg-violet-600 text-white rounded-xl min-w-[120px]">
             Zone Wise Plant Details
           </button>
         </Link>
         <Link to="/register-plant">
-          <button className="bg-green-500 hover:bg-green-600 text-white p-2 rounded min-w-[120px]">
+          <button className="bg-green-500 m-3 p-3 hover:bg-green-600 text-white rounded-xl min-w-[120px]">
             Register Plant
           </button>
         </Link>
         <Link to="/update-plant">
-          <button className="bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded min-w-[120px]">
+          <button className="bg-yellow-500 m-3 p-3 hover:bg-yellow-600 text-white rounded-xl min-w-[120px]">
             Update Plant
           </button>
         </Link>
         <Link to="/delete-plant">
-          <button className="bg-red-500 hover:bg-red-600 text-white p-2 rounded min-w-[120px]">
+          <button className="bg-red-500 m-3 p-3 hover:bg-red-600 text-white rounded-xl min-w-[120px]">
             Delete Plant
           </button>
         </Link>
       </div>
-      
+
       {/* Map Component */}
       <div className="overflow-hidden md:overflow-auto">
         <MapComponent />
