@@ -76,6 +76,13 @@ const Navbar = () => {
             )}
           </div>
 
+          <Link
+            to="/zone-wise-plant-details"
+            className="bg-violet-500 px-4 py-2 rounded-md hover:bg-violet-600 transition duration-200 focus:outline-none"
+          >
+            Zone Wise Plant Details
+          </Link>
+
           {/* Logout Button */}
           <button
             onClick={logout}

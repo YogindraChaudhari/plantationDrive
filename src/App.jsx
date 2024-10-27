@@ -61,6 +61,7 @@ import Navbar from "./components/Navbar";
 import AuthScreen from "./screens/AuthScreen";
 import HomeScreen from "./screens/HomeScreen";
 import "./App.css";
+import ZoneWisePlants from "./components/ZoneWisePlants";
 import RegisterPlant from "./components/RegisterPlant";
 import DeletePlant from "./components/DeletePlant";
 import UpdatePlant from "./components/UpdatePlant";
@@ -92,6 +93,14 @@ function AppContent() {
           element={
             <PrivateRoute>
               <HomeScreen />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/zone-wise-plant-details"
+          element={
+            <PrivateRoute>
+              <ZoneWisePlants />
             </PrivateRoute>
           }
         />

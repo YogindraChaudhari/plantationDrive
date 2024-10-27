@@ -81,9 +81,7 @@ const UpdatePlant = () => {
       setPlantDocId(""); // Clear the document ID after updating
     } catch (error) {
       console.error("Error updating plant:", error);
-      toast.error(
-        "Error updating plant. Please check the console for details."
-      ); // Show error toast
+      toast.error("Error updating plant. Please check the details."); // Show error toast
     }
   };
 
@@ -266,7 +264,7 @@ const UpdatePlant = () => {
                   {fileName ? fileName : "No file chosen"}
                 </span>
               </div>
-              </div>
+            </div>
             <button
               type="submit"
               className="w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"

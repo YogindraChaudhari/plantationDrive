@@ -25,6 +25,11 @@ const HomeScreen = () => {
       <ToastContainer />
       <div className="flex justify-center gap-4 mb-8">
         {/* Replace buttons with Link components */}
+        <Link to="/zone-wise-plant-details">
+          <button className="bg-violet-500 hover:bg-violet-600 text-white p-2 rounded">
+            Zone Wise Plant Details
+          </button>
+        </Link>
         <Link to="/register-plant">
           <button className="bg-green-500 hover:bg-green-600 text-white p-2 rounded">
             Register Plant
