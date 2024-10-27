@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { db } from "../services/firebaseConfig";
 import { doc, updateDoc } from "firebase/firestore";
-import { collection, query, where, getDoc, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import the CSS for styling
 
 const UpdatePlant = () => {
   const [searchParams, setSearchParams] = useState({
@@ -11,6 +13,7 @@ const UpdatePlant = () => {
   const [plantData, setPlantData] = useState(null);
   const [updatedFields, setUpdatedFields] = useState({});
   const [fileName, setFileName] = useState("");
+  const [plantDocId, setPlantDocId] = useState("");
 
   const handleSearchInputChange = (e) => {
     setSearchParams({ ...searchParams, [e.target.name]: e.target.value });
@@ -48,81 +51,41 @@ const UpdatePlant = () => {
       const querySnapshot = await getDocs(plantQuery);
       if (!querySnapshot.empty) {
         const plantDoc = querySnapshot.docs[0];
-        console.log("Plant data fetched:", plantDoc.data());
+        // console.log("Plant data fetched:", plantDoc.data());
+        toast.success("Plant data successfully");
         setPlantData(plantDoc.data());
         setUpdatedFields(plantDoc.data()); // Populate updatedFields with the fetched data
+        setPlantDocId(plantDoc.id); // Save the document ID
       } else {
         console.warn("No plant found with the provided zone and plant number.");
-        alert("Plant not found.");
+        toast.error("Plant not found."); // Show error toast
       }
     } catch (error) {
       console.error("Error fetching plant:", error);
-      alert("Error fetching plant. Please check the console for details.");
+      toast.error(
+        "Error fetching plant. Please check the console for details."
+      ); // Show error toast
     }
   };
 
   const handleUpdate = async () => {
-    if (!plantData) return; // Early exit if plantData is null
+    if (!plantData || !plantDocId) return;
 
-    const zone = searchParams.zone.trim();
-    const plantNumber = searchParams.plantNumber.trim();
-
-    const plantRef = doc(db, "plants", `${zone}-${plantNumber}`);
-
-    console.log("Zone:", zone);
-    console.log("Plant Number:", plantNumber);
-    console.log("Plant reference ID:", `${zone}-${plantNumber}`);
+    const plantRef = doc(db, "plants", plantDocId); // Use the stored document ID
 
     try {
-      // Check if the document exists
-      const docSnap = await getDoc(plantRef);
-      if (!docSnap.exists()) {
-        alert("Document does not exist!");
-        console.error("No document found with ID:", `${zone}-${plantNumber}`);
-        return; // Exit if the document does not exist
-      }
-
-      console.log("Updating plant with data:", {
-        ...plantData,
-        ...updatedFields,
-      });
-
-      await updateDoc(plantRef, { ...plantData, ...updatedFields });
-
-      alert("Plant updated successfully!");
-      setPlantData(null); // Reset the plantData after update
-      setUpdatedFields({}); // Reset updatedFields after update
+      await updateDoc(plantRef, updatedFields);
+      toast.success("Plant updated successfully!"); // Show success toast
+      setPlantData(null);
+      setUpdatedFields({});
+      setPlantDocId(""); // Clear the document ID after updating
     } catch (error) {
       console.error("Error updating plant:", error);
-      alert("Error updating plant. Please check the console for details.");
+      toast.error(
+        "Error updating plant. Please check the console for details."
+      ); // Show error toast
     }
   };
-
-  // const handleUpdate = async () => {
-  //   if (!plantData) return; // Early exit if plantData is null
-
-  //   try {
-  //     const plantRef = doc(
-  //       db,
-  //       "plants",
-  //       `${searchParams.zone}-${searchParams.plantNumber}`
-  //     );
-
-  //     console.log("Updating plant with data:", {
-  //       ...plantData,
-  //       ...updatedFields,
-  //     });
-
-  //     await updateDoc(plantRef, { ...plantData, ...updatedFields });
-
-  //     alert("Plant updated successfully!");
-  //     setPlantData(null); // Reset the plantData after update
-  //     setUpdatedFields({}); // Reset updatedFields after update
-  //   } catch (error) {
-  //     console.error("Error updating plant:", error);
-  //     alert("Error updating plant. Please check the console for details.");
-  //   }
-  // };
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-green-200 to-blue-300 p-6">
@@ -262,9 +225,9 @@ const UpdatePlant = () => {
                 onChange={handleUpdateInputChange}
                 className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
               >
-                <option value="good">Good</option>
-                <option value="deceased">Deceased</option>
-                <option value="infected">Infected</option>
+                <option value="Good">Good</option>
+                <option value="Deceased">Deceased</option>
+                <option value="Infected">Infected</option>
               </select>
             </div>
             <div>
@@ -286,9 +249,9 @@ const UpdatePlant = () => {
               <div className="relative mt-1">
                 <input
                   type="file"
-                  onChange={handleUpdateInputChange}
+                  onChange={handleFileChange}
                   id="file-upload"
-                  className="sr-only" // Hides the default file input
+                  className="sr-only"
                 />
                 <label
                   htmlFor="file-upload"
@@ -303,17 +266,17 @@ const UpdatePlant = () => {
                   {fileName ? fileName : "No file chosen"}
                 </span>
               </div>
-            </div>
-
+              </div>
             <button
               type="submit"
-              className="w-full py-2 bg-green-500 text-white rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 mt-4"
+              className="w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
             >
               Update Plant
             </button>
           </form>
         )}
       </div>
+      <ToastContainer /> {/* Include ToastContainer to show toasts */}
     </div>
   );
 };

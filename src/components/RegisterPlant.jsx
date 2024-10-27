@@ -158,7 +158,6 @@
 
 // export default RegisterPlant;
 
-// Register.jsx
 import React, { useState } from "react";
 import { db, storage } from "../services/firebaseConfig";
 import { addDoc, collection, updateDoc, doc } from "firebase/firestore";
@@ -218,20 +217,35 @@ const RegisterPlant = () => {
     e.preventDefault();
     setError("");
 
-    if (!validateDMS(plantData.latitude) || !validateDMS(plantData.longitude)) {
-      setError(
-        "Please enter valid latitude and longitude values in DMS format."
-      );
-      toast.error("Invalid latitude or longitude format.");
+    const decimalRegex = /^-?\d+(\.\d+)?$/; // Matches decimal format
+
+    let lat, lng;
+
+    // Check if latitude is in decimal or DMS format
+    if (decimalRegex.test(plantData.latitude)) {
+      lat = parseFloat(plantData.latitude);
+    } else if (validateDMS(plantData.latitude)) {
+      lat = dmsToDecimal(plantData.latitude);
+    } else {
+      setError("Invalid latitude format. Please use decimal or DMS.");
+      toast.error("Invalid latitude format.");
       return;
     }
 
-    const lat = dmsToDecimal(plantData.latitude);
-    const lng = dmsToDecimal(plantData.longitude);
+    // Check if longitude is in decimal or DMS format
+    if (decimalRegex.test(plantData.longitude)) {
+      lng = parseFloat(plantData.longitude);
+    } else if (validateDMS(plantData.longitude)) {
+      lng = dmsToDecimal(plantData.longitude);
+    } else {
+      setError("Invalid longitude format. Please use decimal or DMS.");
+      toast.error("Invalid longitude format.");
+      return;
+    }
 
     if (lat === null || lng === null) {
-      setError("Invalid DMS format for latitude or longitude.");
-      toast.error("Invalid DMS format for coordinates.");
+      setError("Invalid coordinates format.");
+      toast.error("Invalid coordinates format.");
       return;
     }
 
@@ -250,6 +264,7 @@ const RegisterPlant = () => {
       }
 
       toast.success("Plant registered successfully!");
+      toast.success("Checkout registered plant details in maps");
       setPlantData({
         name: "",
         plantNumber: "",
@@ -382,9 +397,9 @@ const RegisterPlant = () => {
               onChange={handleInputChange}
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
             >
-              <option value="good">Good</option>
-              <option value="deceased">Deceased</option>
-              <option value="infected">Infected</option>
+              <option value="Good">Good</option>
+              <option value="Deceased">Deceased</option>
+              <option value="Infected">Infected</option>
             </select>
           </div>
 
