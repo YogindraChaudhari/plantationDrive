@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../services/firebaseConfig"; // Ensure this path is correct
 import { collection, getDocs } from "firebase/firestore";
-import bgImg2 from "../assets/bg-img2.png";
 
 const ZoneWisePlants = () => {
   const [plantsByZone, setPlantsByZone] = useState({});
@@ -37,16 +36,8 @@ const ZoneWisePlants = () => {
   };
 
   return (
-    <div
-      className="flex flex-col items-center min-h-screen  p-6"
-      style={{
-        backgroundImage: `url(${bgImg2})`,
-        opacity: 0.9,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    >
-      <h1 className="text-4xl font-semibold mb-4 text-white">Plants by Zone</h1>
+    <div className="flex flex-col items-center min-h-screen bg-gradient-to-b from-white to-green-300 p-6">
+      <h1 className="text-2xl font-semibold mb-4">Plants by Zone</h1>
       <div className="mb-4">
         {Object.keys(plantsByZone).map((zone) => (
           <button
@@ -60,10 +51,10 @@ const ZoneWisePlants = () => {
       </div>
       {selectedZone && (
         <div>
-          <h2 className="text-3xl font-semibold mb-2 text-white">
+          <h2 className="text-xl font-semibold mb-2">
             Plants in Zone {selectedZone}
           </h2>
-          <ol className="list-disc pl-5 text-white text-2xl">
+          <ol className="list-disc pl-5">
             {plantsByZone[selectedZone].map((plant) => (
               <li key={plant.id} className="mb-1">
                 <strong>Plant Number: </strong> {plant.plantNumber},
