@@ -24,6 +24,27 @@ const UpdatePlant = () => {
     setUpdatedFields({ ...updatedFields, [name]: value });
   };
 
+  const handleFetchLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setPlantData({
+            ...plantData,
+            latitude: position.coords.latitude.toString(),
+            longitude: position.coords.longitude.toString(),
+          });
+          toast.success("Location fetched successfully!");
+        },
+        (error) => {
+          toast.error("Error fetching location. Please try again.");
+          console.error("Error fetching location:", error);
+        }
+      );
+    } else {
+      toast.error("Geolocation is not supported by this browser.");
+    }
+  };
+
   const handleFileChange = (event) => {
     if (event.target.files.length > 0) {
       setFileName(event.target.files[0].name);
@@ -185,6 +206,14 @@ const UpdatePlant = () => {
                 required
               />
             </div>
+            {/* Fetch Location Button */}
+            <button
+              type="button"
+              onClick={handleFetchLocation}
+              className="w-full py-3 bg-yellow-400 text-white font-bold rounded-lg hover:bg-yellow-500"
+            >
+              Fetch Location
+            </button>
             <div>
               <label className="text-sm font-medium text-gray-600">
                 Latitude
