@@ -24,27 +24,6 @@ const UpdatePlant = () => {
     setUpdatedFields({ ...updatedFields, [name]: value });
   };
 
-  const handleFetchLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setPlantData({
-            ...plantData,
-            latitude: position.coords.latitude.toString(),
-            longitude: position.coords.longitude.toString(),
-          });
-          toast.success("Location fetched successfully!");
-        },
-        (error) => {
-          toast.error("Error fetching location. Please try again.");
-          console.error("Error fetching location:", error);
-        }
-      );
-    } else {
-      toast.error("Geolocation is not supported by this browser.");
-    }
-  };
-
   const handleFileChange = (event) => {
     if (event.target.files.length > 0) {
       setFileName(event.target.files[0].name);
@@ -103,6 +82,29 @@ const UpdatePlant = () => {
     } catch (error) {
       console.error("Error updating plant:", error);
       toast.error("Error updating plant. Please check the details."); // Show error toast
+    }
+  };
+
+  // Fetch current location and update latitude and longitude fields
+  const fetchCurrentLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setUpdatedFields((prevFields) => ({
+            ...prevFields,
+            latitude: latitude.toFixed(6), // Limit to 6 decimal places
+            longitude: longitude.toFixed(6),
+          }));
+          toast.success("Location fetched successfully!");
+        },
+        (error) => {
+          console.error("Error fetching location:", error);
+          toast.error("Error fetching location.");
+        }
+      );
+    } else {
+      toast.error("Geolocation is not supported by this browser.");
     }
   };
 
@@ -209,10 +211,10 @@ const UpdatePlant = () => {
             {/* Fetch Location Button */}
             <button
               type="button"
-              onClick={handleFetchLocation}
+              onClick={fetchCurrentLocation}
               className="w-full py-3 bg-yellow-400 text-white font-bold rounded-lg hover:bg-yellow-500"
             >
-              Fetch Location
+              Use Current Location
             </button>
             <div>
               <label className="text-sm font-medium text-gray-600">
