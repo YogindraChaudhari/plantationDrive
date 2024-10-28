@@ -173,7 +173,7 @@ const RegisterPlant = () => {
     height: "",
     latitude: "",
     longitude: "",
-    health: "good", // default option
+    health: "Good", // default option
     zone: "",
   });
   const [image, setImage] = useState(null);
@@ -186,6 +186,27 @@ const RegisterPlant = () => {
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) setImage(file);
+  };
+
+  const handleFetchLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setPlantData({
+            ...plantData,
+            latitude: position.coords.latitude.toString(),
+            longitude: position.coords.longitude.toString(),
+          });
+          toast.success("Location fetched successfully!");
+        },
+        (error) => {
+          toast.error("Error fetching location. Please try again.");
+          console.error("Error fetching location:", error);
+        }
+      );
+    } else {
+      toast.error("Geolocation is not supported by this browser.");
+    }
   };
 
   const validateDMS = (coordinate) => {
@@ -353,6 +374,15 @@ const RegisterPlant = () => {
               required
             />
           </div>
+
+          {/* Fetch Location Button */}
+          <button
+            type="button"
+            onClick={handleFetchLocation}
+            className="w-full py-3 bg-green-500 text-white font-bold rounded-lg hover:bg-green-500"
+          >
+            Fetch Location
+          </button>
 
           {/* Latitude */}
           <div>
