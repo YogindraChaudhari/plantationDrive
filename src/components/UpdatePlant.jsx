@@ -87,8 +87,8 @@ const UpdatePlant = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-green-200 to-blue-300 p-6">
-      <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-lg">
-        <h3 className="text-2xl font-semibold mb-6 text-center text-gray-800">
+      <div className="w-full max-w-lg mx-auto p-6 bg-white rounded-lg shadow-lg">
+        <h3 className="text-2xl font-bold mb-6 text-center text-gray-800">
           Update Plant Information
         </h3>
 
@@ -100,7 +100,7 @@ const UpdatePlant = () => {
               name="zone"
               placeholder="Zone"
               onChange={handleSearchInputChange}
-              className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
             />
           </div>
           <div>
@@ -112,12 +112,12 @@ const UpdatePlant = () => {
               name="plantNumber"
               placeholder="Plant Number"
               onChange={handleSearchInputChange}
-              className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
             />
           </div>
           <button
             onClick={fetchPlant}
-            className="w-full mt-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="w-full mt-4 py-3 font-bold bg-yellow-400 text-white rounded-lg hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-600"
           >
             Fetch Plant
           </button>
@@ -141,7 +141,7 @@ const UpdatePlant = () => {
                 placeholder="Plant Name"
                 value={updatedFields.name || ""}
                 onChange={handleUpdateInputChange}
-                className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
               />
             </div>
             <div>
@@ -154,7 +154,7 @@ const UpdatePlant = () => {
                 placeholder="Plant Number"
                 value={updatedFields.plantNumber || ""}
                 onChange={handleUpdateInputChange}
-                className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 required
               />
             </div>
@@ -168,7 +168,7 @@ const UpdatePlant = () => {
                 placeholder="Plant Type"
                 value={updatedFields.type || ""}
                 onChange={handleUpdateInputChange}
-                className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
               />
             </div>
             <div>
@@ -181,7 +181,7 @@ const UpdatePlant = () => {
                 placeholder="Height"
                 value={updatedFields.height || ""}
                 onChange={handleUpdateInputChange}
-                className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 required
               />
             </div>
@@ -195,7 +195,7 @@ const UpdatePlant = () => {
                 placeholder="Latitude"
                 value={updatedFields.latitude || ""}
                 onChange={handleUpdateInputChange}
-                className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 required
               />
             </div>
@@ -209,7 +209,7 @@ const UpdatePlant = () => {
                 placeholder="Longitude"
                 value={updatedFields.longitude || ""}
                 onChange={handleUpdateInputChange}
-                className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 required
               />
             </div>
@@ -221,7 +221,7 @@ const UpdatePlant = () => {
                 name="health"
                 value={updatedFields.health || "good"}
                 onChange={handleUpdateInputChange}
-                className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
               >
                 <option value="Good">Good</option>
                 <option value="Deceased">Deceased</option>
@@ -236,7 +236,7 @@ const UpdatePlant = () => {
                 placeholder="Zone"
                 value={updatedFields.zone || ""}
                 onChange={handleUpdateInputChange}
-                className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 required
               />
             </div>
@@ -253,7 +253,7 @@ const UpdatePlant = () => {
                 />
                 <label
                   htmlFor="file-upload"
-                  className="block w-full p-2 text-center bg-blue-500 text-white rounded cursor-pointer hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  className="block w-full py-3 font-bold text-center bg-yellow-400 text-white rounded-lg cursor-pointer hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-600"
                 >
                   Choose File
                 </label>
@@ -267,7 +267,7 @@ const UpdatePlant = () => {
             </div>
             <button
               type="submit"
-              className="w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full py-3 font-bold bg-yellow-400 text-white rounded-lg hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-600"
             >
               Update Plant
             </button>

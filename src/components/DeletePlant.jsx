@@ -40,8 +40,8 @@ const DeletePlant = ({ onDeleteSuccess }) => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-t from-green-400 to-white-200 p-6">
-      <div className="max-w-md mx-auto p-4 border rounded-lg shadow-md bg-white">
-        <h3 className="text-xl font-semibold mb-4 text-center">
+      <div className="w-full max-w-md mx-auto p-4 border rounded-lg shadow-md bg-white">
+        <h3 className="text-2xl font-bold mb-4 text-center">
           Delete Plant Information
         </h3>
         <div>
@@ -51,7 +51,7 @@ const DeletePlant = ({ onDeleteSuccess }) => {
             placeholder="Zone"
             value={zone}
             onChange={(e) => setZone(e.target.value)}
-            className="mb-4 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="mb-4 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-400"
           />
         </div>
         <div>
@@ -63,7 +63,7 @@ const DeletePlant = ({ onDeleteSuccess }) => {
             placeholder="Plant Number"
             value={plantNumber}
             onChange={(e) => setPlantNumber(e.target.value)}
-            className="mb-4 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="mb-4 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-400"
           />
         </div>
         <div>
@@ -73,12 +73,12 @@ const DeletePlant = ({ onDeleteSuccess }) => {
             placeholder="Plant Name"
             value={plantName}
             onChange={(e) => setPlantName(e.target.value)}
-            className="mb-4 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="mb-4 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-400"
           />
         </div>
         <button
           onClick={handleDelete}
-          className="w-full p-2 bg-red-500 text-white rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
+          className="w-full py-3 font-bold bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
         >
           Delete Plant
         </button>

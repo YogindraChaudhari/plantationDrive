@@ -51,19 +51,32 @@ const ZoneWisePlants = () => {
       </div>
       {selectedZone && (
         <div>
-          <h2 className="text-xl font-semibold mb-2">
+          <h2 className="text-xl text-center font-bold mb-2">
             Plants in Zone {selectedZone}
           </h2>
-          <ol className="list-disc pl-5">
-            {plantsByZone[selectedZone].map((plant) => (
-              <li key={plant.id} className="mb-1">
-                <strong>Plant Number: </strong> {plant.plantNumber},
-                <strong> Name: </strong> {plant.name},{" "}
-                <strong> Height: </strong> {plant.height} ft,{" "}
-                <strong> Health: </strong> {plant.health}
-              </li>
-            ))}
-          </ol>
+          <table className="w-full text-left table-auto sm:table-auto">
+            <thead className="text-xs font-medium text-gray-500 uppercase">
+              <tr>
+                <th className="px-4 py-2">Plant Number</th>
+                <th className="px-4 py-2">Name</th>
+                <th className="px-4 py-2">Height (ft)</th>
+                <th className="px-4 py-2">Health</th>
+              </tr>
+            </thead>
+            <tbody>
+              {plantsByZone[selectedZone].map((plant) => (
+                <tr
+                  key={plant.id}
+                  className="border-b border-gray-200 hover:bg-gray-100"
+                >
+                  <td className="px-4 py-2">{plant.plantNumber}</td>
+                  <td className="px-4 py-2">{plant.name}</td>
+                  <td className="px-4 py-2">{plant.height}</td>
+                  <td className="px-4 py-2">{plant.health}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
           <button
             onClick={() => setSelectedZone(null)}
             className="mt-4 p-3 font-bold bg-red-500 text-white rounded-xl hover:bg-red-600"
