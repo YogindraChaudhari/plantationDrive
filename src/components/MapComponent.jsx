@@ -7,30 +7,55 @@ import L from "leaflet";
 
 // Map zone to marker color icons
 const zoneIcons = {
-  10: L.icon({
+  1: L.icon({
     iconUrl:
       "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
     iconSize: [25, 41],
     iconAnchor: [12, 41],
   }),
-  11: L.icon({
+  2: L.icon({
     iconUrl:
-      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png",
+      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-gold.png",
     iconSize: [25, 41],
     iconAnchor: [12, 41],
   }),
-  13: L.icon({
+  10: L.icon({
+    iconUrl:
+      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-black.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+  }),
+  11: L.icon({
     iconUrl:
       "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png",
     iconSize: [25, 41],
     iconAnchor: [12, 41],
   }),
-  14: L.icon({
+  12: L.icon({
+    iconUrl:
+      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+  }),
+  13: L.icon({
     iconUrl:
       "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png",
     iconSize: [25, 41],
     iconAnchor: [12, 41],
   }),
+  14: L.icon({
+    iconUrl:
+      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+  }),
+  15: L.icon({
+    iconUrl:
+      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-grey.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+  }),
+
   // Add more zones and colors as needed
 };
 
