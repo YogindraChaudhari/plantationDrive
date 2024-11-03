@@ -5,6 +5,15 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
 const MapComponent = ({ updateKey }) => {
   const [plants, setPlants] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const openImageModal = (imageUrl) => {
+    setSelectedImage(imageUrl);
+  };
+
+  const closeImageModal = () => {
+    setSelectedImage(null);
+  };
 
   useEffect(() => {
     const fetchPlants = async () => {
@@ -17,12 +26,12 @@ const MapComponent = ({ updateKey }) => {
   }, [updateKey]); // Refetch when updateKey changes
 
   return (
-    <div className="flex flex-col h-screen">
-      <div className="flex-grow">
+    <div className="flex flex-col h-screen relative">
+      <div className={`flex-grow ${selectedImage ? "hidden" : ""}`}>
         <MapContainer
           center={[19.1, 73.1]}
           zoom={10}
-          style={{ height: "100%" }}
+          style={{ height: "100%", zIndex: 0 }}
         >
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           {plants.map((plant) => (
@@ -37,6 +46,12 @@ const MapComponent = ({ updateKey }) => {
                     <strong>Height:</strong> {plant.height} ft.
                   </p>
                   <p className="text-gray-700 mb-1">
+                    <strong>Latitude:</strong> {plant.latitude}
+                  </p>
+                  <p className="text-gray-700 mb-1">
+                    <strong>Longitude:</strong> {plant.longitude}
+                  </p>
+                  <p className="text-gray-700 mb-1">
                     <strong>Health:</strong> {plant.health}
                   </p>
                   <p className="text-gray-700 mb-1">
@@ -49,7 +64,8 @@ const MapComponent = ({ updateKey }) => {
                     <img
                       src={plant.imageUrl}
                       alt={plant.name}
-                      className="w-full h-auto rounded-md"
+                      className="w-full h-auto rounded-md cursor-pointer"
+                      onClick={() => openImageModal(plant.imageUrl)}
                     />
                   )}
                 </div>
@@ -58,6 +74,24 @@ const MapComponent = ({ updateKey }) => {
           ))}
         </MapContainer>
       </div>
+
+      {selectedImage && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50">
+          <div className="relative">
+            <img
+              src={selectedImage}
+              alt="Zoomed Plant"
+              className="max-w-full max-h-screen rounded-lg"
+            />
+            <button
+              onClick={closeImageModal}
+              className="absolute top-2 right-2 bg-green-800 text-white rounded-3xl px-4 p-2 hover:bg-green-600"
+            >
+              X
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
