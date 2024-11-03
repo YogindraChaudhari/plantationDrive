@@ -14,7 +14,11 @@ export default defineConfig({
         short_name: "Plant Tracker App",
         description:
           "Use this app to track, register, and update information on various plants around you.",
+        // theme_color: "#09CE23",
         theme_color: "#ffffff",
+        background_color: "#ffffff",
+        display: "standalone",
+        start_url: "/",
         icons: [
           {
             src: "pwa-64x64.png",
