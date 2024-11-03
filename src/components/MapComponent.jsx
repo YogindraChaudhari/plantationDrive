@@ -1,7 +1,46 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { db } from "../services/firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet-color-markers";
+import L from "leaflet";
+
+// Map zone to marker color icons
+const zoneIcons = {
+  10: L.icon({
+    iconUrl:
+      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+  }),
+  11: L.icon({
+    iconUrl:
+      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+  }),
+  13: L.icon({
+    iconUrl:
+      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+  }),
+  14: L.icon({
+    iconUrl:
+      "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+  }),
+  // Add more zones and colors as needed
+};
+
+// Default icon in case a zone doesn’t match
+const defaultIcon = L.icon({
+  iconUrl:
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+});
 
 const MapComponent = ({ updateKey }) => {
   const [plants, setPlants] = useState([]);
@@ -35,7 +74,11 @@ const MapComponent = ({ updateKey }) => {
         >
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
           {plants.map((plant) => (
-            <Marker key={plant.id} position={[plant.latitude, plant.longitude]}>
+            <Marker
+              key={plant.id}
+              position={[plant.latitude, plant.longitude]}
+              icon={zoneIcons[plant.zone] || defaultIcon}
+            >
               <Popup>
                 <div className="bg-white shadow-lg rounded-lg p-6 max-w-sm overflow-auto">
                   <h3 className="text-3xl font-bold mb-2">{plant.name}</h3>

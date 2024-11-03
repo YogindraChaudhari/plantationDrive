@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { db } from "../services/firebaseConfig"; // Ensure this path is correct
 import { collection, getDocs } from "firebase/firestore";
 
