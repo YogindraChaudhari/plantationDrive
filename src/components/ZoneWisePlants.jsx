@@ -124,13 +124,13 @@ const ZoneWisePlants = () => {
           </h2>
           <div className="overflow-x-auto">
             <table className="w-full text-left table-auto border border-gray-300">
-              <thead className="text-xs font-medium text-gray-500 uppercase bg-gray-100">
+              <thead className="text-xs font-medium text-black uppercase bg-green-400">
                 <tr>
-                  <th className="px-4 py-2">Plant No.</th>
-                  <th className="px-4 py-2">Name</th>
-                  <th className="px-4 py-2">Height (ft)</th>
-                  <th className="px-4 py-2">Health</th>
-                  <th className="px-4 py-2">Actions</th>
+                  <th className="px-4 py-2 text-center">Plant No.</th>
+                  <th className="px-4 py-2 text-center">Name</th>
+                  <th className="px-4 py-2 text-center">Height (ft)</th>
+                  <th className="px-4 py-2 text-center">Health</th>
+                  <th className="px-4 py-2 text-center">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -145,7 +145,7 @@ const ZoneWisePlants = () => {
                     <td className="px-4 py-2">{plant.name}</td>
                     <td className="px-4 py-2 text-center">{plant.height}</td>
                     <td className="px-4 py-2">{plant.health}</td>
-                    <td className="px-4 py-2 text-center">
+                    <td className="px-4 py-2 text-center flex">
                       <button
                         onClick={() =>
                           handleEditClick(plant.zone, plant.plantNumber)
