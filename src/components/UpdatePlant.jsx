@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { db } from "../services/firebaseConfig";
 import { doc, updateDoc } from "firebase/firestore";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { toast, ToastContainer } from "react-toastify";
+import { useLocation } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css"; // Import the CSS for styling
 
 const UpdatePlant = () => {
@@ -23,6 +24,13 @@ const UpdatePlant = () => {
     const { name, value } = e.target;
     setUpdatedFields({ ...updatedFields, [name]: value });
   };
+
+  const location = useLocation();
+  const { zone, plantNumber } = location.state || { zone: "", plantNumber: "" };
+
+  useEffect(() => {
+    setSearchParams({ zone, plantNumber }); // Set initial search params to pre-fill inputs
+  }, [zone, plantNumber]);
 
   const handleFileChange = (event) => {
     if (event.target.files.length > 0) {
@@ -125,6 +133,7 @@ const UpdatePlant = () => {
               type="text"
               name="zone"
               placeholder="Zone"
+              value={searchParams.zone} // Pre-filled with the zone
               onChange={handleSearchInputChange}
               className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
             />
@@ -137,6 +146,7 @@ const UpdatePlant = () => {
               type="text"
               name="plantNumber"
               placeholder="Plant Number"
+              value={searchParams.plantNumber}
               onChange={handleSearchInputChange}
               className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-yellow-400"
             />
