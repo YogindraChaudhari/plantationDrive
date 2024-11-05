@@ -17,6 +17,7 @@ import ZoneWisePlants from "./components/ZoneWisePlants";
 import RegisterPlant from "./components/RegisterPlant";
 import DeletePlant from "./components/DeletePlant";
 import UpdatePlant from "./components/UpdatePlant";
+import MapComponent from "./components/MapComponent";
 
 function App() {
   return (
@@ -53,6 +54,14 @@ function AppContent() {
           element={
             <PrivateRoute>
               <ZoneWisePlants />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/map"
+          element={
+            <PrivateRoute>
+              <MapComponent />
             </PrivateRoute>
           }
         />

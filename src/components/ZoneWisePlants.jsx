@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { db } from "../services/firebaseConfig"; // Ensure this path is correct
 import { collection, getDocs } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 const ZoneWisePlants = () => {
   const [plantsByZone, setPlantsByZone] = useState({});
   const [selectedZone, setSelectedZone] = useState(null);
+  // Inside your ZoneWisePlants component
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPlants = async () => {
@@ -35,6 +38,17 @@ const ZoneWisePlants = () => {
     setSelectedZone(zone);
   };
 
+  //function to handle redirection and pass plant data
+  const handlePlantClick = (plant) => {
+    navigate("/map", {
+      state: {
+        latitude: plant.latitude,
+        longitude: plant.longitude,
+        plantData: plant,
+      },
+    });
+  };
+
   return (
     <div className="flex flex-col items-center min-h-screen bg-gradient-to-b from-white to-green-300 p-6">
       <h1 className="text-2xl font-bold mb-4">Plants by Zone</h1>
@@ -57,7 +71,7 @@ const ZoneWisePlants = () => {
           <table className="w-full text-left table-auto sm:table-auto">
             <thead className="text-xs font-medium text-gray-500 uppercase">
               <tr>
-                <th className="px-4 py-2">Plant Number</th>
+                <th className="px-4 py-2">Plant No.</th>
                 <th className="px-4 py-2">Name</th>
                 <th className="px-4 py-2">Height (ft)</th>
                 <th className="px-4 py-2">Health</th>
@@ -67,11 +81,12 @@ const ZoneWisePlants = () => {
               {plantsByZone[selectedZone].map((plant) => (
                 <tr
                   key={plant.id}
-                  className="border-b border-gray-200 hover:bg-gray-100"
+                  className="border-b border-gray-400 hover:bg-green-300"
+                  onClick={() => handlePlantClick(plant)}
                 >
-                  <td className="px-4 py-2">{plant.plantNumber}</td>
+                  <td className="px-4 py-2 text-center">{plant.plantNumber}</td>
                   <td className="px-4 py-2">{plant.name}</td>
-                  <td className="px-4 py-2">{plant.height}</td>
+                  <td className="px-4 py-2 text-center">{plant.height}</td>
                   <td className="px-4 py-2">{plant.health}</td>
                 </tr>
               ))}
