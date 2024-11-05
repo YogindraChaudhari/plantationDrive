@@ -50,10 +50,10 @@ const AuthScreen = () => {
         <div className="leaf"></div>
       </div>
       <div className="max-w-md w-full mx-auto p-6 sm:p-8 bg-white rounded-lg shadow-lg opacity-95 z-10">
-        <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-center text-green-500">
+        <h2 className="text-3xl sm:text-3xl font-bold mb-4 text-center text-green-800">
           Welcome to Plant Tracker App
         </h2>
-        <h2 className="text-xl sm:text-xl font-bold mb-4 text-center text-gray-800">
+        <h2 className="text-2xl sm:text-xl font-bold mb-4 text-center text-red-800">
           {isRegister ? "Register" : "Login"}
         </h2>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
