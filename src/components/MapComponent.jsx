@@ -25,7 +25,7 @@ const createZoneIcon = (zone, isSelected = false) => {
 
   return L.icon({
     iconUrl,
-    iconSize: isSelected ? [40, 40] : [25, 41], // Bigger size for selected marker
+    iconSize: isSelected ? [25, 41] : [25, 41], // Bigger size for selected marker
     iconAnchor: [12, 41],
   });
 };
