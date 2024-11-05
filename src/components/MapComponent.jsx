@@ -6,6 +6,12 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet-color-markers";
 import L from "leaflet";
 
+// Helper function to format Firestore timestamp
+const formatDate = (timestamp) => {
+  const date = timestamp?.toDate();
+  return date ? date.toLocaleDateString("en-US") : "No Date";
+};
+
 // Map zone to marker color icons
 const createZoneIcon = (zone, isSelected = false) => {
   const colorUrls = {
@@ -43,6 +49,7 @@ const RecenterMap = ({ position }) => {
 const MapComponent = ({ updateKey }) => {
   const [plants, setPlants] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedUploadDate, setSelectedUploadDate] = useState(null);
   const [selectedPlant, setSelectedPlant] = useState(null); // State for the selected plant
   const markerRef = useRef(null); // Ref for selected plant's marker
   const location = useLocation(); // Get location object
@@ -50,10 +57,12 @@ const MapComponent = ({ updateKey }) => {
 
   const openImageModal = (imageUrl) => {
     setSelectedImage(imageUrl);
+    setSelectedUploadDate(uploadDate);
   };
 
   const closeImageModal = () => {
     setSelectedImage(null);
+    setSelectedUploadDate(null);
   };
 
   useEffect(() => {
@@ -204,6 +213,9 @@ const MapComponent = ({ updateKey }) => {
             >
               X
             </button>
+            <p className="text-white mt-2 text-center">
+              Uploaded on: {formatDate(selectedUploadDate)}
+            </p>
           </div>
         </div>
       )}

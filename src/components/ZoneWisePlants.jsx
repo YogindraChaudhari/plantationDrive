@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { db } from "../services/firebaseConfig"; // Ensure this path is correct
 import { collection, getDocs } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import { FaEdit, FaTrash } from "react-icons/fa"; // Importing edit and delete icons
 
 const ZoneWisePlants = () => {
   const [plantsByZone, setPlantsByZone] = useState({});
   const [selectedZone, setSelectedZone] = useState(null);
-  // Inside your ZoneWisePlants component
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,7 +38,6 @@ const ZoneWisePlants = () => {
     setSelectedZone(zone);
   };
 
-  //function to handle redirection and pass plant data
   const handlePlantClick = (plant) => {
     navigate("/map", {
       state: {
@@ -47,6 +46,15 @@ const ZoneWisePlants = () => {
         plantData: plant,
       },
     });
+  };
+
+  const handleEditClick = (plantId) => {
+    navigate(`/edit-plant/${plantId}`); // Navigate to edit plant page
+  };
+
+  const handleDeleteClick = (plantId) => {
+    // Logic to delete the plant from Firestore
+    console.log(`Delete plant with ID: ${plantId}`);
   };
 
   return (
@@ -75,6 +83,8 @@ const ZoneWisePlants = () => {
                 <th className="px-4 py-2">Name</th>
                 <th className="px-4 py-2">Height (ft)</th>
                 <th className="px-4 py-2">Health</th>
+                <th className="px-4 py-2">Actions</th>{" "}
+                {/* Added actions header */}
               </tr>
             </thead>
             <tbody>
@@ -82,12 +92,34 @@ const ZoneWisePlants = () => {
                 <tr
                   key={plant.id}
                   className="border-b border-gray-400 hover:bg-green-300"
-                  onClick={() => handlePlantClick(plant)}
                 >
-                  <td className="px-4 py-2 text-center">{plant.plantNumber}</td>
+                  <td
+                    className="px-4 py-2 text-center underline underline-offset-8 cursor-pointer"
+                    onClick={() => handlePlantClick(plant)}
+                  >
+                    {plant.plantNumber}
+                  </td>
                   <td className="px-4 py-2">{plant.name}</td>
                   <td className="px-4 py-2 text-center">{plant.height}</td>
                   <td className="px-4 py-2">{plant.health}</td>
+                  <td className="px-4 py-2 text-center">
+                    {" "}
+                    {/* Actions cell */}
+                    <button
+                      onClick={() => handleEditClick(plant.id)}
+                      className="text-white bg-green-800 hover:text-green-800 hover:bg-white mr-2"
+                      aria-label="Edit Plant"
+                    >
+                      <FaEdit />
+                    </button>
+                    <button
+                      onClick={() => handleDeleteClick(plant.id)}
+                      className="text-white  bg-red-800 hover:text-green-800 hover:bg-white"
+                      aria-label="Delete Plant"
+                    >
+                      <FaTrash />
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>

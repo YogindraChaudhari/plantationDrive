@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { db, storage } from "../services/firebaseConfig";
 import { addDoc, collection, updateDoc, doc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -115,6 +115,7 @@ const RegisterPlant = () => {
         ...plantData,
         latitude: lat,
         longitude: lng,
+        uploadDate: new Date(), // Adding the uploadDate field here
       });
 
       if (image) {
@@ -304,7 +305,9 @@ const RegisterPlant = () => {
               {image ? image.name : "Choose File"}
             </label>
           </div>
-
+          <p className="font-bold text-center text-gray-500">
+            Please Click on Register Button Just Once
+          </p>
           {/* Submit Button */}
           <button
             type="submit"

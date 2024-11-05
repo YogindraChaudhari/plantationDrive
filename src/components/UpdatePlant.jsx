@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { db } from "../services/firebaseConfig";
 import { doc, updateDoc } from "firebase/firestore";
 import { collection, query, where, getDocs } from "firebase/firestore";
@@ -74,7 +74,10 @@ const UpdatePlant = () => {
     const plantRef = doc(db, "plants", plantDocId); // Use the stored document ID
 
     try {
-      await updateDoc(plantRef, updatedFields);
+      await updateDoc(plantRef, {
+        ...updatedFields,
+        uploadDate: new Date().toISOString(), // Update uploadDate to the current date
+      });
       toast.success("Plant updated successfully!"); // Show success toast
       setPlantData(null);
       setUpdatedFields({});

@@ -128,3 +128,10 @@ const MapComponent = () => {
 };
 
 export default MapComponent;
+
+ <td
+    className="px-4 py-2 text-center underline underline-offset-8 cursor-pointer"
+    onClick={() => handlePlantClick(plant)}
+  >
+    {plant.plantNumber}
+</td>
