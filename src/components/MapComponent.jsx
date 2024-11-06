@@ -1,16 +1,10 @@
 import { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { db } from "../services/firebaseConfig";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, Timestamp } from "firebase/firestore";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet-color-markers";
 import L from "leaflet";
-
-// Helper function to format Firestore timestamp
-const formatDate = (timestamp) => {
-  const date = timestamp?.toDate();
-  return date ? date.toLocaleDateString("en-US") : "No Date";
-};
 
 // Map zone to marker color icons
 const createZoneIcon = (zone, isSelected = false) => {
@@ -49,7 +43,6 @@ const RecenterMap = ({ position }) => {
 const MapComponent = ({ updateKey }) => {
   const [plants, setPlants] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [selectedUploadDate, setSelectedUploadDate] = useState(null);
   const [selectedPlant, setSelectedPlant] = useState(null); // State for the selected plant
   const markerRef = useRef(null); // Ref for selected plant's marker
   const location = useLocation(); // Get location object
@@ -57,12 +50,10 @@ const MapComponent = ({ updateKey }) => {
 
   const openImageModal = (imageUrl) => {
     setSelectedImage(imageUrl);
-    setSelectedUploadDate(uploadDate);
   };
 
   const closeImageModal = () => {
     setSelectedImage(null);
-    setSelectedUploadDate(null);
   };
 
   useEffect(() => {
@@ -90,6 +81,30 @@ const MapComponent = ({ updateKey }) => {
       }, 100); // Add a small delay to ensure the marker is mounted
     }
   }, [selectedPlant]);
+
+  // Function to format the Firestore timestamp directly
+  const formatTimestamp = (timestamp) => {
+    if (!timestamp) return "Unknown"; // Return 'Unknown' if no timestamp is available
+    const date = timestamp.toDate(); // Convert Firestore Timestamp to JavaScript Date object
+    return date.toLocaleString(); // Format the date to a human-readable string
+  };
+
+  useEffect(() => {
+    if (plantData) {
+      // Ensure createdAt is a Firestore Timestamp or convert it if needed
+      const processedPlantData = {
+        ...plantData,
+        createdAt:
+          plantData.createdAt instanceof Timestamp
+            ? plantData.createdAt
+            : Timestamp.fromDate(new Date()),
+      };
+      setSelectedPlant(processedPlantData);
+    }
+  }, [plantData]);
+
+  const isMapRoute = location.pathname === "/map";
+  const isHomeRoute = location.pathname === "/";
 
   return (
     <div className="flex flex-col h-screen relative">
@@ -138,6 +153,10 @@ const MapComponent = ({ updateKey }) => {
                   <p className="text-gray-700 mb-2">
                     <strong>Plant Number:</strong> {plant.plantNumber}
                   </p>
+                  <p className="text-gray-700 mb-2">
+                    <strong>Created At:</strong>{" "}
+                    {formatTimestamp(plant.createdAt)}
+                  </p>
                   {plant.imageUrl && (
                     <img
                       src={plant.imageUrl}
@@ -184,6 +203,13 @@ const MapComponent = ({ updateKey }) => {
                   <p className="text-gray-700 mb-2">
                     <strong>Plant Number:</strong> {selectedPlant.plantNumber}
                   </p>
+                  {/* Displaying the formatted creation time for selectedPlant */}
+                  {selectedPlant.createdAt && (
+                    <p className="text-gray-700 mb-2">
+                      <strong>Created At:</strong>{" "}
+                      {formatTimestamp(selectedPlant.createdAt)}
+                    </p>
+                  )}
                   {selectedPlant.imageUrl && (
                     <img
                       src={selectedPlant.imageUrl}
@@ -207,15 +233,23 @@ const MapComponent = ({ updateKey }) => {
               alt="Zoomed Plant"
               className="max-w-full max-h-screen rounded-lg"
             />
+            {/* Conditionally Display Creation Date */}
+            {isMapRoute && selectedPlant && (
+              <p className="text-white mt-4 text-center">
+                Uploaded On: {formatTimestamp(selectedPlant.createdAt)}
+              </p>
+            )}
+            {isHomeRoute && plants.length > 0 && (
+              <p className="text-white mt-4 text-center">
+                Uploaded On: {formatTimestamp(plants[0].createdAt)}
+              </p>
+            )}
             <button
               onClick={closeImageModal}
               className="absolute top-2 right-2 bg-green-800 text-white rounded-3xl px-4 p-2 hover:bg-green-600"
             >
               X
             </button>
-            <p className="text-white mt-2 text-center">
-              Uploaded on: {formatDate(selectedUploadDate)}
-            </p>
           </div>
         </div>
       )}

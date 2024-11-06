@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { db } from "../services/firebaseConfig";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { toast, ToastContainer } from "react-toastify";
 import { useLocation } from "react-router-dom";
@@ -84,7 +84,7 @@ const UpdatePlant = () => {
     try {
       await updateDoc(plantRef, {
         ...updatedFields,
-        uploadDate: new Date().toISOString(), // Update uploadDate to the current date
+        createdAt: serverTimestamp(), // Update uploadDate to the current date
       });
       toast.success("Plant updated successfully!"); // Show success toast
       setPlantData(null);

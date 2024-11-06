@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { db, storage } from "../services/firebaseConfig";
-import { addDoc, collection, updateDoc, doc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  updateDoc,
+  doc,
+  serverTimestamp,
+} from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,6 +21,7 @@ const RegisterPlant = () => {
     longitude: "",
     health: "Good", // default option
     zone: "",
+    createdAt: "",
   });
   const [image, setImage] = useState(null);
   const [error, setError] = useState(""); // To handle validation errors
@@ -115,7 +122,7 @@ const RegisterPlant = () => {
         ...plantData,
         latitude: lat,
         longitude: lng,
-        uploadDate: new Date(), // Adding the uploadDate field here
+        createdAt: serverTimestamp(), // Add timestamp here
       });
 
       if (image) {
@@ -136,6 +143,7 @@ const RegisterPlant = () => {
         longitude: "",
         health: "good",
         zone: "",
+        createdAt: serverTimestamp(),
       });
       setImage(null);
     } catch (error) {
