@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { db, storage } from "../services/firebaseConfig";
 import {
   addDoc,
@@ -25,6 +25,12 @@ const RegisterPlant = () => {
   });
   const [image, setImage] = useState(null);
   const [error, setError] = useState(""); // To handle validation errors
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
+
+  useEffect(() => {
+    // Display a pop-up notification before the form is filled
+    toast.info("Please fill out all the fields before submitting the form.");
+  }, []);
 
   const handleInputChange = (e) => {
     setPlantData({ ...plantData, [e.target.name]: e.target.value });
@@ -81,8 +87,14 @@ const RegisterPlant = () => {
     return decimal;
   };
 
+  const handleRegisterClick = (e) => {
+    e.preventDefault();
+    setIsModalOpen(true); // Open the modal on register button click
+  };
+
   const handleRegister = async (e) => {
     e.preventDefault();
+    setIsModalOpen(false);
     setError("");
 
     const decimalRegex = /^-?\d+(\.\d+)?$/; // Matches decimal format
@@ -152,6 +164,10 @@ const RegisterPlant = () => {
     }
   };
 
+  const closeModal = () => {
+    setIsModalOpen(false); // Close the modal without confirming
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-green-200 to-blue-300 p-6">
       <div className="w-full max-w-lg mx-auto p-8 border rounded-lg shadow-xl bg-white">
@@ -159,7 +175,7 @@ const RegisterPlant = () => {
           Register New Plant
         </h3>
         {error && <p className="text-red-500 mb-4">{error}</p>}
-        <form onSubmit={handleRegister} className="space-y-4">
+        <form onSubmit={handleRegisterClick} className="space-y-4">
           {/* Plant Name */}
           <div>
             <label className="block text-gray-600 font-medium">
@@ -313,9 +329,9 @@ const RegisterPlant = () => {
               {image ? image.name : "Choose File"}
             </label>
           </div>
-          <p className="font-bold text-center text-gray-500">
+          {/* <p className="font-bold text-center text-gray-500">
             Please Click on Register Button Just Once
-          </p>
+          </p> */}
           {/* Submit Button */}
           <button
             type="submit"
@@ -326,6 +342,29 @@ const RegisterPlant = () => {
         </form>
         <ToastContainer position="top-right" autoClose={3000} />
       </div>
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+            <h4 className="text-lg font-semibold mb-4">
+              Are you sure you want to register?
+            </h4>
+            <div className="flex justify-end">
+              <button
+                onClick={handleRegister}
+                className="bg-green-500 text-white py-2 px-4 rounded-lg mr-2 hover:bg-green-600"
+              >
+                Yes
+              </button>
+              <button
+                onClick={closeModal}
+                className="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600"
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

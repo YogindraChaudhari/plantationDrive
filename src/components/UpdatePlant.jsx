@@ -16,6 +16,11 @@ const UpdatePlant = () => {
   const [fileName, setFileName] = useState("");
   const [plantDocId, setPlantDocId] = useState("");
 
+  useEffect(() => {
+    // Display a pop-up notification before the form is filled
+    toast.info("Please fill out all the fields before submitting the form.");
+  }, []);
+
   const handleSearchInputChange = (e) => {
     setSearchParams({ ...searchParams, [e.target.name]: e.target.value });
   };

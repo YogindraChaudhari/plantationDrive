@@ -9,6 +9,9 @@ import { ToastContainer, toast } from "react-toastify";
 const ZoneWisePlants = () => {
   const [plantsByZone, setPlantsByZone] = useState({});
   const [selectedZone, setSelectedZone] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPlantId, setSelectedPlantId] = useState(null);
+  const [selectedImageUrl, setSelectedImageUrl] = useState(null);
   const navigate = useNavigate();
 
   const zoneColors = {
@@ -71,43 +74,50 @@ const ZoneWisePlants = () => {
     });
   };
 
-  const handleDeleteClick = async (plantId, imageUrl) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this plant?"
-    );
-    if (confirmDelete) {
-      try {
-        // Delete the image from Firebase Storage if image URL exists
-        if (imageUrl) {
-          const imageID = imageUrl
-            .split("/o/plants%2F")[1]
-            .split("?alt=media")[0];
-          const imageRef = ref(storage, `plants/${imageID}`);
+  const handleDeleteClick = (plantId, imageUrl) => {
+    setSelectedPlantId(plantId);
+    setSelectedImageUrl(imageUrl);
+    setIsModalOpen(true);
+  };
 
-          await deleteObject(imageRef);
-          console.log("Image deleted from Firebase Storage.");
-        }
+  const confirmDelete = async () => {
+    try {
+      // Delete the image from Firebase Storage if image URL exists
+      if (selectedImageUrl) {
+        const imageID = selectedImageUrl
+          .split("/o/plants%2F")[1]
+          .split("?alt=media")[0];
+        const imageRef = ref(storage, `plants/${imageID}`);
 
-        // Delete the plant document from Firestore
-        const plantDocRef = doc(db, "plants", plantId);
-        await deleteDoc(plantDocRef);
-
-        // Update the UI to reflect the deletion
-        setPlantsByZone((prevPlants) => {
-          const updatedPlants = { ...prevPlants };
-          const plantsInZone = updatedPlants[selectedZone].filter(
-            (plant) => plant.id !== plantId
-          );
-          updatedPlants[selectedZone] = plantsInZone;
-          return updatedPlants;
-        });
-
-        toast.success("Plant deleted successfully!");
-      } catch (error) {
-        console.error("Error deleting plant: ", error);
-        toast.error("There was an error deleting the plant.");
+        await deleteObject(imageRef);
+        console.log("Image deleted from Firebase Storage.");
       }
+
+      // Delete the plant document from Firestore
+      const plantDocRef = doc(db, "plants", selectedPlantId);
+      await deleteDoc(plantDocRef);
+
+      // Update the UI to reflect the deletion
+      setPlantsByZone((prevPlants) => {
+        const updatedPlants = { ...prevPlants };
+        const plantsInZone = updatedPlants[selectedZone].filter(
+          (plant) => plant.id !== selectedPlantId
+        );
+        updatedPlants[selectedZone] = plantsInZone;
+        return updatedPlants;
+      });
+
+      toast.success("Plant deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting plant: ", error);
+      toast.error("There was an error deleting the plant.");
+    } finally {
+      setIsModalOpen(false);
     }
+  };
+
+  const cancelDelete = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -187,6 +197,35 @@ const ZoneWisePlants = () => {
           </button>
         </div>
       )}
+
+      {/* Custom Delete Confirmation Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 flex justify-center items-center z-50 bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-11/12 sm:w-1/3 lg:w-1/4">
+            <h2 className="text-xl font-bold text-center mb-4">
+              Confirm Delete
+            </h2>
+            <p className="text-center mb-4">
+              Are you sure you want to delete this plant?
+            </p>
+            <div className="flex flex-col sm:flex-row justify-between sm:space-x-4">
+              <button
+                onClick={cancelDelete}
+                className="px-4 py-2 bg-gray-300 text-black rounded-lg hover:bg-gray-400 mb-2 sm:mb-0"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
