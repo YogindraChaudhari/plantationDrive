@@ -46,14 +46,17 @@ const MapComponent = ({ updateKey }) => {
   const [selectedPlant, setSelectedPlant] = useState(null); // State for the selected plant
   const markerRef = useRef(null); // Ref for selected plant's marker
   const location = useLocation(); // Get location object
+  const [imageDate, setImageDate] = useState(null); // State for the image's creation date
   const { latitude, longitude, plantData } = location.state || {};
 
-  const openImageModal = (imageUrl) => {
+  const openImageModal = (imageUrl, createdAt) => {
     setSelectedImage(imageUrl);
+    setImageDate(createdAt); // Set the image's creation date when opening the modal
   };
 
   const closeImageModal = () => {
     setSelectedImage(null);
+    setImageDate(null); // Clear the image date when closing the modal
   };
 
   useEffect(() => {
@@ -103,9 +106,6 @@ const MapComponent = ({ updateKey }) => {
     }
   }, [plantData]);
 
-  const isMapRoute = location.pathname === "/map";
-  const isHomeRoute = location.pathname === "/";
-
   return (
     <div className="flex flex-col h-screen relative">
       <div className={`flex-grow ${selectedImage ? "hidden" : ""}`}>
@@ -153,16 +153,18 @@ const MapComponent = ({ updateKey }) => {
                   <p className="text-gray-700 mb-2">
                     <strong>Plant Number:</strong> {plant.plantNumber}
                   </p>
-                  {/* <p className="text-gray-700 mb-2">
+                  <p className="text-gray-700 mb-2">
                     <strong>Created At:</strong>{" "}
                     {formatTimestamp(plant.createdAt)}
-                  </p> */}
+                  </p>
                   {plant.imageUrl && (
                     <img
                       src={plant.imageUrl}
                       alt={plant.name}
                       className="w-full h-auto rounded-md cursor-pointer"
-                      onClick={() => openImageModal(plant.imageUrl)}
+                      onClick={() =>
+                        openImageModal(plant.imageUrl, plant.createdAt)
+                      }
                     />
                   )}
                 </div>
@@ -204,18 +206,17 @@ const MapComponent = ({ updateKey }) => {
                     <strong>Plant Number:</strong> {selectedPlant.plantNumber}
                   </p>
                   {/* Displaying the formatted creation time for selectedPlant */}
-                  {/* {selectedPlant.createdAt && (
+                  {selectedPlant.createdAt && (
                     <p className="text-gray-700 mb-2">
-                      <strong>Created At:</strong>{" "}
+                      <strong>Uploaded On:</strong>{" "}
                       {formatTimestamp(selectedPlant.createdAt)}
                     </p>
-                  )} */}
+                  )}
                   {selectedPlant.imageUrl && (
                     <img
                       src={selectedPlant.imageUrl}
                       alt={selectedPlant.name}
-                      className="w-full h-auto rounded-md cursor-pointer"
-                      onClick={() => openImageModal(selectedPlant.imageUrl)}
+                      className="w-full h-auto rounded-md"
                     />
                   )}
                 </div>
@@ -233,17 +234,14 @@ const MapComponent = ({ updateKey }) => {
               alt="Zoomed Plant"
               className="max-w-full max-h-screen rounded-lg"
             />
-            {/* Conditionally Display Creation Date */}
-            {isMapRoute && selectedPlant && plants.length > 0 && (
-              <p className="text-white mt-4 text-center">
-                Uploaded On: {formatTimestamp(plants[0].createdAt)}
-              </p>
-            )}
-            {isHomeRoute && plants.length > 0 && (
-              <p className="text-white mt-4 text-center">
-                Uploaded On: {formatTimestamp(plants[0].createdAt)}
-              </p>
-            )}
+            {
+              // display date here
+              imageDate && (
+                <p className="mt-2 text-center text-black">
+                  <strong>Uploaded On:</strong> {formatTimestamp(imageDate)}
+                </p>
+              )
+            }
             <button
               onClick={closeImageModal}
               className="absolute top-2 right-2 bg-green-800 text-white rounded-3xl px-4 p-2 hover:bg-green-600"
