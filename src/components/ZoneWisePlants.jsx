@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { db } from "../services/firebaseConfig";
+import { db, storage } from "../services/firebaseConfig";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
+import { ref, deleteObject } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
@@ -70,14 +71,28 @@ const ZoneWisePlants = () => {
     });
   };
 
-  const handleDeleteClick = async (plantId) => {
+  const handleDeleteClick = async (plantId, imageUrl) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this plant?"
     );
     if (confirmDelete) {
       try {
+        // Delete the image from Firebase Storage if image URL exists
+        if (imageUrl) {
+          const imageID = imageUrl
+            .split("/o/plants%2F")[1]
+            .split("?alt=media")[0];
+          const imageRef = ref(storage, `plants/${imageID}`);
+
+          await deleteObject(imageRef);
+          console.log("Image deleted from Firebase Storage.");
+        }
+
+        // Delete the plant document from Firestore
         const plantDocRef = doc(db, "plants", plantId);
         await deleteDoc(plantDocRef);
+
+        // Update the UI to reflect the deletion
         setPlantsByZone((prevPlants) => {
           const updatedPlants = { ...prevPlants };
           const plantsInZone = updatedPlants[selectedZone].filter(
@@ -86,6 +101,7 @@ const ZoneWisePlants = () => {
           updatedPlants[selectedZone] = plantsInZone;
           return updatedPlants;
         });
+
         toast.success("Plant deleted successfully!");
       } catch (error) {
         console.error("Error deleting plant: ", error);
@@ -99,13 +115,6 @@ const ZoneWisePlants = () => {
       <h1 className="text-2xl font-bold mb-4 text-center">Plants by Zone</h1>
       <div className="flex flex-wrap justify-center gap-3 mb-4">
         {Object.keys(plantsByZone).map((zone) => (
-          // <button
-          //   key={zone}
-          //   onClick={() => handleZoneClick(zone)}
-          //   className="px-4 py-2 font-bold bg-blue-800 text-white rounded-lg hover:bg-blue-600"
-          // >
-          //   Zone {zone}
-          // </button>
           <button
             key={zone}
             onClick={() => handleZoneClick(zone)}
@@ -156,7 +165,9 @@ const ZoneWisePlants = () => {
                         <FaEdit />
                       </button>
                       <button
-                        onClick={() => handleDeleteClick(plant.id)}
+                        onClick={() =>
+                          handleDeleteClick(plant.id, plant.imageUrl)
+                        }
                         className="text-white bg-red-800 hover:bg-red-600 p-1 rounded"
                         aria-label="Delete Plant"
                       >

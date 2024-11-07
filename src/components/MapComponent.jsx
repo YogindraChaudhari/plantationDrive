@@ -153,10 +153,10 @@ const MapComponent = ({ updateKey }) => {
                   <p className="text-gray-700 mb-2">
                     <strong>Plant Number:</strong> {plant.plantNumber}
                   </p>
-                  <p className="text-gray-700 mb-2">
+                  {/* <p className="text-gray-700 mb-2">
                     <strong>Created At:</strong>{" "}
                     {formatTimestamp(plant.createdAt)}
-                  </p>
+                  </p> */}
                   {plant.imageUrl && (
                     <img
                       src={plant.imageUrl}
@@ -204,12 +204,12 @@ const MapComponent = ({ updateKey }) => {
                     <strong>Plant Number:</strong> {selectedPlant.plantNumber}
                   </p>
                   {/* Displaying the formatted creation time for selectedPlant */}
-                  {selectedPlant.createdAt && (
+                  {/* {selectedPlant.createdAt && (
                     <p className="text-gray-700 mb-2">
                       <strong>Created At:</strong>{" "}
                       {formatTimestamp(selectedPlant.createdAt)}
                     </p>
-                  )}
+                  )} */}
                   {selectedPlant.imageUrl && (
                     <img
                       src={selectedPlant.imageUrl}
@@ -234,9 +234,9 @@ const MapComponent = ({ updateKey }) => {
               className="max-w-full max-h-screen rounded-lg"
             />
             {/* Conditionally Display Creation Date */}
-            {isMapRoute && selectedPlant && (
+            {isMapRoute && selectedPlant && plants.length > 0 && (
               <p className="text-white mt-4 text-center">
-                Uploaded On: {formatTimestamp(selectedPlant.createdAt)}
+                Uploaded On: {formatTimestamp(plants[0].createdAt)}
               </p>
             )}
             {isHomeRoute && plants.length > 0 && (

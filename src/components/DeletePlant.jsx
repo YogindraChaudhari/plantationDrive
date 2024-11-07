@@ -1,38 +1,82 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { db, storage } from "../services/firebaseConfig";
-import { doc, deleteDoc } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
 import { ref, deleteObject } from "firebase/storage";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const DeletePlant = ({ onDeleteSuccess }) => {
+const DeletePlant = ({ onDeleteSuccess = () => {} }) => {
+  // Default empty function
   const [zone, setZone] = useState("");
   const [plantNumber, setPlantNumber] = useState("");
   const [plantName, setPlantName] = useState("");
 
   const handleDelete = async () => {
-    const plantId = `${zone}-${plantNumber}`;
-    const plantRef = doc(db, "plants", plantId);
     try {
-      // Check if the plant document exists
-      const plantDoc = await getDoc(plantRef);
-      if (!plantDoc.exists()) {
-        toast.error("Plant not found. Please check the zone and plant number.");
-        return;
-      }
+      console.log("Attempting to delete plant...");
 
-      // Reference to the plant image in storage
-      const imageRef = ref(storage, `plants/${plantId}`);
-      await deleteObject(imageRef).catch((error) =>
-        console.warn("No image to delete:", error)
+      // Query Firestore to find the plant document by zone and plantNumber
+      const q = query(
+        collection(db, "plants"),
+        where("zone", "==", zone),
+        where("plantNumber", "==", plantNumber)
       );
 
-      // Delete plant document from Firestore
-      await deleteDoc(plantRef);
+      const querySnapshot = await getDocs(q);
+      if (querySnapshot.empty) {
+        toast.error("Plant not found. Please check the zone and plant number.");
+        console.log("Plant not found in Firestore.");
+        return; // Exit early if the plant is not found
+      }
+
+      // Document ID from the query result
+      const plantDoc = querySnapshot.docs[0]; // Get the first matching document
+      const plantId = plantDoc.id; // The document ID (auto-generated like 'bTztjcjhVtwrin2AbFpH')
+
+      // Get the image URL from the plant document
+      const plantData = plantDoc.data();
+      const imageURL = plantData.imageUrl;
+
+      // If imageURL exists, delete the image from Firebase Storage
+      if (imageURL) {
+        try {
+          const imageID = imageURL
+            .split("/o/plants%2F")[1]
+            .split("?alt=media")[0];
+          const imageRef = ref(storage, `plants/${imageID}`);
+
+          await deleteObject(imageRef);
+          console.log("Image deleted.");
+        } catch (error) {
+          console.warn("Error deleting image:", error);
+        }
+      }
+
+      // Delete the plant document from Firestore
+      await deleteDoc(doc(db, "plants", plantId));
+      console.log("Plant deleted.");
+
+      // Success message after successful deletion
       toast.success("Plant deleted successfully!");
       onDeleteSuccess(); // Trigger update on success
     } catch (error) {
+      // Log the error to investigate why the catch block is being triggered
       console.error("Error deleting plant:", error);
+
+      // Add more specific checks in the catch block for clarity
+      if (error instanceof Error) {
+        console.log("Caught error:", error.message);
+      } else {
+        console.log("Unknown error occurred.");
+      }
+
       toast.error("Failed to delete plant.");
       toast.error("Please check details again.");
     }
