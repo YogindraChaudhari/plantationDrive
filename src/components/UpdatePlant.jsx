@@ -18,7 +18,7 @@ const UpdatePlant = () => {
 
   useEffect(() => {
     // Display a pop-up notification before the form is filled
-    toast.info("Please ensure all the fields correct before fetching.");
+    toast.info("Please ensure all the fields are correct before fetching.");
   }, []);
 
   const handleSearchInputChange = (e) => {
