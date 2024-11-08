@@ -20,12 +20,14 @@ const DeletePlant = ({ onDeleteSuccess = () => {} }) => {
 
   useEffect(() => {
     // Display a pop-up notification before the form is filled
-    toast.info("Please fill out all the fields before submitting the form.");
+    toast.info(
+      "Please fill out all the fields correctly to delete plant data."
+    );
   }, []);
 
   const handleDeleteConfirmation = () => {
     if (!zone || !plantNumber || !plantName) {
-      toast.error("Please fill in both zone plant number and plant name.");
+      toast.error("Please fill out zone, plant number and plant name.");
       return; // Don't open modal if zone or plantNumber is missing
     }
     setIsModalOpen(true); // Open the confirmation modal if valid data is present

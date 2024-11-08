@@ -343,21 +343,21 @@ const RegisterPlant = () => {
         <ToastContainer position="top-right" autoClose={3000} />
       </div>
       {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h4 className="text-lg font-semibold mb-4">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 px-4">
+          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h4 className="text-base sm:text-lg font-semibold mb-4 text-center">
               Are you sure you want to register?
             </h4>
-            <div className="flex justify-end">
+            <div className="flex justify-center gap-2">
               <button
                 onClick={handleRegister}
-                className="bg-green-500 text-white py-2 px-4 rounded-lg mr-2 hover:bg-green-600"
+                className="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 w-full sm:w-auto"
               >
                 Yes
               </button>
               <button
                 onClick={closeModal}
-                className="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600"
+                className="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600 w-full sm:w-auto"
               >
                 No
               </button>

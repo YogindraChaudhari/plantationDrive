@@ -237,7 +237,7 @@ const MapComponent = ({ updateKey }) => {
             {
               // display date here
               imageDate && (
-                <p className="mt-2 text-center text-black">
+                <p className="mt-2 text-center text-white">
                   <strong>Uploaded On:</strong> {formatTimestamp(imageDate)}
                 </p>
               )
