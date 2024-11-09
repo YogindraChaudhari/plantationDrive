@@ -2,6 +2,13 @@ import { useState, useEffect } from "react";
 import { db } from "../services/firebaseConfig";
 import { doc, updateDoc, serverTimestamp } from "firebase/firestore";
 import { collection, query, where, getDocs } from "firebase/firestore";
+import {
+  getStorage,
+  ref,
+  deleteObject,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
 import { toast, ToastContainer } from "react-toastify";
 import { useLocation } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css"; // Import the CSS for styling
@@ -85,12 +92,35 @@ const UpdatePlant = () => {
     if (!plantData || !plantDocId) return;
 
     const plantRef = doc(db, "plants", plantDocId); // Use the stored document ID
-
+    const storage = getStorage();
+    const oldImageRef = ref(storage, `plants/${plantDocId}`);
     try {
-      await updateDoc(plantRef, {
-        ...updatedFields,
-        createdAt: serverTimestamp(), // Update uploadDate to the current date
-      });
+      if (fileName) {
+        // If a new file is selected, delete the old image
+        await deleteObject(oldImageRef);
+
+        // Upload the new image
+        const newImageRef = ref(storage, `plants/${plantDocId}`);
+        const file = document.getElementById("file-upload").files[0];
+        await uploadBytes(newImageRef, file);
+
+        // Get the URL of the new image
+        const newImageUrl = await getDownloadURL(newImageRef);
+
+        // Update Firestore with the new image URL and other fields
+        await updateDoc(plantRef, {
+          ...updatedFields,
+          imageUrl: newImageUrl,
+          createdAt: serverTimestamp(), // Update createdAt to the current date
+        });
+      } else {
+        // If no new file, update Firestore with other fields only
+        await updateDoc(plantRef, {
+          ...updatedFields,
+          createdAt: serverTimestamp(), // Update createdAt to the current date
+        });
+      }
+
       toast.success("Plant updated successfully!"); // Show success toast
       setPlantData(null);
       setUpdatedFields({});
