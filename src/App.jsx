@@ -1,6 +1,5 @@
 // import dotenv from "dotenv";
 // dotenv.config();
-import React from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -18,6 +17,10 @@ import RegisterPlant from "./components/RegisterPlant";
 import DeletePlant from "./components/DeletePlant";
 import UpdatePlant from "./components/UpdatePlant";
 import MapComponent from "./components/MapComponent";
+import PlantDetailsPage from "./components/PlantDetailsPage";
+import SpecificPlant from "./components/SpecificPlant";
+import AttendancePage from "./components/AttendancePage";
+// import UserManagementPage from "./components/UserManagementPage";
 
 function App() {
   return (
@@ -49,6 +52,22 @@ function AppContent() {
             </PrivateRoute>
           }
         />
+        <Route
+          path="/attendance"
+          element={
+            <PrivateRoute>
+              <AttendancePage />
+            </PrivateRoute>
+          }
+        />
+        {/* <Route
+          path="/user"
+          element={
+            <PrivateRoute>
+              <UserManagementPage />
+            </PrivateRoute>
+          }
+        /> */}
         <Route
           path="/zone-wise-plant-details"
           element={
@@ -86,6 +105,22 @@ function AppContent() {
           element={
             <PrivateRoute>
               <DeletePlant />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/plant-details"
+          element={
+            <PrivateRoute>
+              <PlantDetailsPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/specific-plant/:id"
+          element={
+            <PrivateRoute>
+              <SpecificPlant />
             </PrivateRoute>
           }
         />

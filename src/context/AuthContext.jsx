@@ -1,33 +1,90 @@
-import React, { createContext, useContext, useState } from "react";
-import { auth } from "../services/firebaseConfig"; // Ensure this is correct
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { auth, db } from "../services/firebaseConfig";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
+import {
+  doc,
+  setDoc,
+  getDoc,
+  getDocs,
+  collection,
+  query,
+  where,
+} from "firebase/firestore";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const [userRole, setUserRole] = useState(null); // State to store user's role
 
-  React.useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
+  // Ensure user stays logged in on page refresh
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setCurrentUser(user);
+        // Fetch and set user data including role
+        const userDocRef = doc(db, "users", user.uid);
+        const userSnapshot = await getDoc(userDocRef);
+        if (userSnapshot.exists()) {
+          const data = userSnapshot.data();
+          setUserData(data);
+          setUserRole(data.role); // Set role from Firestore
+        }
+      } else {
+        setCurrentUser(null);
+        setUserData(null);
+        setUserRole(null); // Clear role on logout
+      }
     });
     return unsubscribe;
   }, []);
 
-  const register = async (email, password) => {
+  const register = async (
+    email,
+    password,
+    firstname,
+    lastname,
+    zone,
+    phone,
+    role = "Read User" // Default role set to "Read User"
+  ) => {
     try {
+      const phoneQuery = query(
+        collection(db, "users"),
+        where("phone", "==", phone)
+      );
+      const phoneSnapshot = await getDocs(phoneQuery);
+
+      if (!phoneSnapshot.empty) {
+        throw new Error("Phone number is already in use");
+      }
+
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
-      setCurrentUser(userCredential.user); // Set the current user after registration
+      const user = userCredential.user;
+
+      await setDoc(doc(db, "users", user.uid), {
+        email,
+        firstname,
+        lastname,
+        zone,
+        phone,
+        role, // Save role in Firestore
+        uid: user.uid,
+      });
+
+      setCurrentUser(user);
     } catch (error) {
+      console.error("Error during registration:", error);
       throw new Error(error.message);
     }
   };
@@ -39,23 +96,53 @@ export const AuthProvider = ({ children }) => {
         email,
         password
       );
-      setCurrentUser(userCredential.user); // Set the current user after login
+      const user = userCredential.user;
+
+      // Fetch additional user details, including role
+      const userDocRef = doc(db, "users", user.uid);
+      const userSnapshot = await getDoc(userDocRef);
+      if (userSnapshot.exists()) {
+        const data = userSnapshot.data();
+        setUserData(data);
+        setUserRole(data.role); // Set role
+      }
+
+      setCurrentUser(user);
     } catch (error) {
-      throw new Error(error.message); // Throw error to be caught in AuthScreen
+      console.error("Login error:", error);
     }
   };
 
   const logout = async () => {
     try {
       await signOut(auth);
-      setCurrentUser(null); // Clear current user on sign-out
+      setCurrentUser(null);
+      setUserData(null);
+      setUserRole(null); // Clear role on logout
     } catch (error) {
       console.error("Logout failed:", error.message);
     }
   };
 
+  // Role-based access control helpers
+  const isReadUser = () => userRole === "Read User";
+  const isZonalAdmin = () => userRole === "Zonal Admin";
+  const isSuperAdmin = () => userRole === "Super Admin";
+
   return (
-    <AuthContext.Provider value={{ currentUser, login, register, logout }}>
+    <AuthContext.Provider
+      value={{
+        currentUser,
+        userData,
+        userRole,
+        login,
+        register,
+        logout,
+        isReadUser,
+        isZonalAdmin,
+        isSuperAdmin,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

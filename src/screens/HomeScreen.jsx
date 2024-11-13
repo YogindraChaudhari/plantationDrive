@@ -67,6 +67,11 @@ const HomeScreen = () => {
             Delete Plant
           </button>
         </Link>
+        <Link to="/plant-details">
+          <button className="bg-gradient-to-r from-purple-500 to-violet-500 text-white rounded-xl p-4 w-full max-w-[220px] shadow-lg hover:scale-105 transition-transform duration-300 ease-in-out hover:from-purple-600 hover:to-violet-600 focus:outline-none focus:ring-4 focus:ring-pink-300">
+            Plant Details
+          </button>
+        </Link>
       </div>
 
       {/* Map Component */}

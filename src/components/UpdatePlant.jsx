@@ -52,6 +52,10 @@ const UpdatePlant = () => {
     }
   };
 
+  const handleRadioChange = (name, value) => {
+    setUpdatedFields({ ...updatedFields, [name]: value });
+  };
+
   const fetchPlant = async () => {
     console.log(
       "Searching for plant with Zone:",
@@ -343,6 +347,240 @@ const UpdatePlant = () => {
                   {fileName ? fileName : "No file chosen"}
                 </span>
               </div>
+            </div>
+
+            {/* Insects Present */}
+            <div className="mb-4">
+              <label className="block text-gray-600 font-medium">
+                Insects Present:
+              </label>
+              <div className="flex justify-center gap-6">
+                <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition ease-in-out duration-200">
+                  <input
+                    type="radio"
+                    name="insects"
+                    value="yes"
+                    checked={updatedFields.insects === true}
+                    onChange={() => handleRadioChange("insects", true)}
+                    className="w-4 h-4 text-blue-500 focus:ring-2 focus:ring-blue-400"
+                  />
+                  <span className="text-gray-700">Yes</span>
+                </label>
+                <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition ease-in-out duration-200">
+                  <input
+                    type="radio"
+                    name="insects"
+                    value="no"
+                    checked={updatedFields.insects === false}
+                    onChange={() => handleRadioChange("insects", false)}
+                    className="w-4 h-4 text-red-500 focus:ring-2 focus:ring-red-400"
+                  />
+                  <span className="text-gray-700">No</span>
+                </label>
+              </div>
+            </div>
+
+            {/* Fertilizers */}
+            <div className="mb-4">
+              <label className="block text-gray-600 font-medium">
+                Fertilizers Applied:
+              </label>
+              <div className="flex justify-center gap-6">
+                <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition ease-in-out duration-200">
+                  <input
+                    type="radio"
+                    name="fertilizers"
+                    value="yes"
+                    checked={updatedFields.fertilizers === true}
+                    onChange={() => handleRadioChange("fertilizers", true)}
+                    className="w-4 h-4 text-blue-500 focus:ring-2 focus:ring-blue-400"
+                  />
+                  <span className="text-gray-700">Yes</span>
+                </label>
+                <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition ease-in-out duration-200">
+                  <input
+                    type="radio"
+                    name="fertilizers"
+                    value="no"
+                    checked={updatedFields.fertilizers === false}
+                    onChange={() => handleRadioChange("fertilizers", false)}
+                    className="w-4 h-4 text-red-500 focus:ring-2 focus:ring-red-400"
+                  />
+                  <span className="text-gray-700">No</span>
+                </label>
+              </div>
+            </div>
+
+            {/* Soil Level */}
+            <div className="mb-4">
+              <label className="block text-gray-600 font-medium">
+                Soil Level Maintained:
+              </label>
+              <div className="flex justify-center gap-6">
+                <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition ease-in-out duration-200">
+                  <input
+                    type="radio"
+                    name="soilLevel"
+                    value="yes"
+                    checked={updatedFields.soilLevel === true}
+                    onChange={() => handleRadioChange("soilLevel", true)}
+                    className="w-4 h-4 text-blue-500 focus:ring-2 focus:ring-blue-400"
+                  />
+                  <span className="text-gray-700">Yes</span>
+                </label>
+                <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition ease-in-out duration-200">
+                  <input
+                    type="radio"
+                    name="soilLevel"
+                    value="no"
+                    checked={updatedFields.soilLevel === false}
+                    onChange={() => handleRadioChange("soilLevel", false)}
+                    className="w-4 h-4 text-red-500 focus:ring-2 focus:ring-red-400"
+                  />
+                  <span className="text-gray-700">No</span>
+                </label>
+              </div>
+            </div>
+
+            {/* Tree Burnt */}
+            <div className="mb-4">
+              <label className="block text-gray-600 font-medium">
+                Tree Burnt:
+              </label>
+              <div className="flex justify-center gap-6">
+                <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition ease-in-out duration-200">
+                  <input
+                    type="radio"
+                    name="treeBurnt"
+                    value="yes"
+                    checked={updatedFields.treeBurnt === true}
+                    onChange={() => handleRadioChange("treeBurnt", true)}
+                    className="w-4 h-4 text-blue-500 focus:ring-2 focus:ring-blue-400"
+                  />
+                  <span className="text-gray-700">Yes</span>
+                </label>
+                <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition ease-in-out duration-200">
+                  <input
+                    type="radio"
+                    name="treeBurnt"
+                    value="no"
+                    checked={updatedFields.treeBurnt === false}
+                    onChange={() => handleRadioChange("treeBurnt", false)}
+                    className="w-4 h-4 text-red-500 focus:ring-2 focus:ring-red-400"
+                  />
+                  <span className="text-gray-700">No</span>
+                </label>
+              </div>
+            </div>
+
+            {/* Unwanted Grass */}
+            <div className="mb-4">
+              <label className="block text-gray-600 font-medium">
+                Unwanted Grass:
+              </label>
+              <div className="flex justify-center gap-6">
+                <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition ease-in-out duration-200">
+                  <input
+                    type="radio"
+                    name="unwantedGrass"
+                    value="yes"
+                    checked={updatedFields.unwantedGrass === true}
+                    onChange={() => handleRadioChange("unwantedGrass", true)}
+                    className="w-4 h-4 text-blue-500 focus:ring-2 focus:ring-blue-400"
+                  />
+                  <span className="text-gray-700">Yes</span>
+                </label>
+                <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition ease-in-out duration-200">
+                  <input
+                    type="radio"
+                    name="unwantedGrass"
+                    value="no"
+                    checked={updatedFields.unwantedGrass === false}
+                    onChange={() => handleRadioChange("unwantedGrass", false)}
+                    className="w-4 h-4 text-red-500 focus:ring-2 focus:ring-red-400"
+                  />
+                  <span className="text-gray-700">No</span>
+                </label>
+              </div>
+            </div>
+
+            {/* Water Logging */}
+            <div className="mb-4">
+              <label className="block text-gray-600 font-medium">
+                Water Logging:
+              </label>
+              <div className="flex justify-center gap-6">
+                <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition ease-in-out duration-200">
+                  <input
+                    type="radio"
+                    name="waterLogging"
+                    value="yes"
+                    checked={updatedFields.waterLogging === true}
+                    onChange={() => handleRadioChange("waterLogging", true)}
+                    className="w-4 h-4 text-blue-500 focus:ring-2 focus:ring-blue-400"
+                  />
+                  <span className="text-gray-700">Yes</span>
+                </label>
+                <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition ease-in-out duration-200">
+                  <input
+                    type="radio"
+                    name="waterLogging"
+                    value="no"
+                    checked={updatedFields.waterLogging === false}
+                    onChange={() => handleRadioChange("waterLogging", false)}
+                    className="w-4 h-4 text-red-500 focus:ring-2 focus:ring-red-400"
+                  />
+                  <span className="text-gray-700">No</span>
+                </label>
+              </div>
+            </div>
+
+            {/* Compound */}
+            <div className="mb-4">
+              <label className="block text-gray-600 font-medium">
+                Compound:
+              </label>
+              <div className="flex justify-center gap-6">
+                <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition ease-in-out duration-200">
+                  <input
+                    type="radio"
+                    name="compound"
+                    value="yes"
+                    checked={updatedFields.compound === true}
+                    onChange={() => handleRadioChange("compound", true)}
+                    className="w-4 h-4 text-blue-500 focus:ring-2 focus:ring-blue-400"
+                  />
+                  <span className="text-gray-700">Yes</span>
+                </label>
+                <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition ease-in-out duration-200">
+                  <input
+                    type="radio"
+                    name="compound"
+                    value="no"
+                    checked={updatedFields.compound === false}
+                    onChange={() => handleRadioChange("compound", false)}
+                    className="w-4 h-4 text-red-500 focus:ring-2 focus:ring-red-400"
+                  />
+                  <span className="text-gray-700">No</span>
+                </label>
+              </div>
+            </div>
+
+            {/* Water Schedule */}
+            <div>
+              <label className="block text-gray-600 font-medium">
+                Water Schedule
+              </label>
+              <select
+                name="waterSchedule"
+                value={updatedFields.waterSchedule || ""}
+                onChange={handleUpdateInputChange}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              >
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="alternate">Alternate Days</option>
+              </select>
             </div>
             <button
               type="submit"

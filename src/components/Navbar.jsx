@@ -219,6 +219,21 @@ const Navbar = () => {
           >
             Zone Wise Plant Details
           </Link>
+          <Link to="/plant-details">
+            <button className="bg-gradient-to-r from-purple-500 via-indigo-600 to-indigo-700 px-6 py-2 rounded-md text-lg font-extrabold hover:bg-gradient-to-r hover:from-purple-600 hover:to-indigo-800 transition duration-200 mb-4 text-center">
+              Plant Details
+            </button>
+          </Link>
+          <Link to="/attendance">
+            <button className="bg-gradient-to-r from-purple-500 via-indigo-600 to-indigo-700 px-6 py-2 rounded-md text-lg font-extrabold hover:bg-gradient-to-r hover:from-purple-600 hover:to-indigo-800 transition duration-200 mb-4 text-center">
+              Attendance
+            </button>
+          </Link>
+          {/* <Link to="/user">
+            <button className="bg-gradient-to-r from-purple-500 via-indigo-600 to-indigo-700 px-6 py-2 rounded-md text-lg font-extrabold hover:bg-gradient-to-r hover:from-purple-600 hover:to-indigo-800 transition duration-200 mb-4 text-center">
+              User Management
+            </button>
+          </Link> */}
           <button
             onClick={logout}
             className="bg-gradient-to-r from-red-500 via-red-600 to-red-700 px-6 py-2 rounded-md text-lg font-extrabold hover:bg-gradient-to-r hover:from-red-600 hover:to-red-800 transition duration-200 mb-4 text-center"

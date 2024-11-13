@@ -810,3 +810,41 @@ const MapComponent = ({ updateKey }) => {
 };
 
 export default MapComponent;
+*********************************************************************************
+
+//role base access:
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+     // User Collection Rules
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth.token.role == 'Super Admin';
+    }
+
+    // Plants Collection Rules
+    match /plants/{plantId} {
+      // Read Users and Zonal Admins can read all plant data
+      allow read: if request.auth != null;
+      
+      // Zonal Admin can add/edit plants in their zone, Super Admin has full access
+      allow write: if request.auth.token.role == 'Super Admin' ||
+                   (request.auth.token.role == 'Zonal Admin' && 
+                    request.resource.data.zone == request.auth.token.zone);
+    }
+
+    // Attendance Collection Rules
+    match /attendance/{attendanceId} {
+      // All authenticated users can log attendance and read their own attendance
+      allow read, write: if request.auth != null;
+
+      // Zonal Admins can read attendance records of users in their zone
+      allow read: if request.auth.token.role == 'Super Admin' ||
+                  (request.auth.token.role == 'Zonal Admin' && 
+                   resource.data.zone == request.auth.token.zone);
+    }
+  }
+}

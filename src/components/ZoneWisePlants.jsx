@@ -5,6 +5,7 @@ import { ref, deleteObject } from "firebase/storage";
 import { useNavigate } from "react-router-dom";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 const ZoneWisePlants = () => {
   const [plantsByZone, setPlantsByZone] = useState({});
@@ -161,7 +162,16 @@ const ZoneWisePlants = () => {
                     >
                       {plant.plantNumber}
                     </td>
-                    <td className="px-4 py-2">{plant.name}</td>
+                    {/* <td className="px-4 py-2">{plant.name}</td> */}
+                    <td>
+                      {/* Link to the PlantDetailsPage with plant ID */}
+                      <Link
+                        to={`/specific-plant/${plant.id}`}
+                        className="underline cursor-pointer"
+                      >
+                        {plant.name}
+                      </Link>
+                    </td>
                     <td className="px-4 py-2 text-center">{plant.height}</td>
                     <td className="px-4 py-2">{plant.health}</td>
                     <td className="px-4 py-2 text-center flex">

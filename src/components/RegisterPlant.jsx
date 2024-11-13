@@ -22,6 +22,14 @@ const RegisterPlant = () => {
     health: "Good", // default option
     zone: "",
     createdAt: "",
+    insects: false,
+    fertilizers: false,
+    soilLevel: false,
+    treeBurnt: false,
+    unwantedGrass: false,
+    waterLogging: false,
+    compound: false,
+    waterSchedule: "daily", // default water schedule
   });
   const [image, setImage] = useState(null);
   const [error, setError] = useState(""); // To handle validation errors
@@ -32,8 +40,29 @@ const RegisterPlant = () => {
     toast.info("Please fill out all the fields before submitting the form.");
   }, []);
 
+  // const handleInputChange = (e) => {
+  //   setPlantData({ ...plantData, [e.target.name]: e.target.value });
+  // };
+
   const handleInputChange = (e) => {
-    setPlantData({ ...plantData, [e.target.name]: e.target.value });
+    const { name, type, value, checked } = e.target;
+
+    if (type === "checkbox") {
+      setPlantData((plantData) => ({
+        ...plantData,
+        [name]: checked,
+      }));
+    } else if (type === "radio") {
+      setPlantData((plantData) => ({
+        ...plantData,
+        [name]: value,
+      }));
+    } else {
+      setPlantData((plantData) => ({
+        ...plantData,
+        [name]: value,
+      }));
+    }
   };
 
   const handleImageUpload = (e) => {
@@ -156,6 +185,14 @@ const RegisterPlant = () => {
         health: "good",
         zone: "",
         createdAt: serverTimestamp(),
+        insects: false,
+        fertilizers: false,
+        soilLevel: false,
+        treeBurnt: false,
+        unwantedGrass: false,
+        waterLogging: false,
+        compound: false,
+        waterSchedule: "daily",
       });
       setImage(null);
     } catch (error) {
@@ -329,10 +366,266 @@ const RegisterPlant = () => {
               {image ? image.name : "Choose File"}
             </label>
           </div>
-          {/* <p className="font-bold text-center text-gray-500">
-            Please Click on Register Button Just Once
-          </p> */}
-          {/* Submit Button */}
+          {/* Insects */}
+          <div className="mb-4">
+            <label className="block text-gray-600 font-medium">
+              Insects Present:
+            </label>
+            <div className="flex justify-center gap-6">
+              <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition ease-in-out duration-200">
+                <input
+                  type="radio"
+                  name="insects"
+                  value="yes"
+                  checked={plantData.insects === true}
+                  onChange={() => setPlantData({ ...plantData, insects: true })}
+                  className="w-4 h-4 text-blue-500 focus:ring-2 focus:ring-blue-400"
+                />
+                <span className="text-gray-700">Yes</span>
+              </label>
+              <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition ease-in-out duration-200">
+                <input
+                  type="radio"
+                  name="insects"
+                  value="no"
+                  checked={plantData.insects === false}
+                  onChange={() =>
+                    setPlantData({ ...plantData, insects: false })
+                  }
+                  className="w-4 h-4 text-red-500 focus:ring-2 focus:ring-red-400"
+                />
+                <span className="text-gray-700">No</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Fertilizers */}
+          <div className="mb-4">
+            <label className="block text-gray-600 font-medium">
+              Fertilizers Applied:
+            </label>
+            <div className="flex justify-center gap-6">
+              <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition ease-in-out duration-200">
+                <input
+                  type="radio"
+                  name="fertilizers"
+                  value="yes"
+                  checked={plantData.fertilizers === true}
+                  onChange={() =>
+                    setPlantData({ ...plantData, fertilizers: true })
+                  }
+                  className="w-4 h-4 text-blue-500 focus:ring-2 focus:ring-blue-400"
+                />
+                <span className="text-gray-700">Yes</span>
+              </label>
+              <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition ease-in-out duration-200">
+                <input
+                  type="radio"
+                  name="fertilizers"
+                  value="no"
+                  checked={plantData.fertilizers === false}
+                  onChange={() =>
+                    setPlantData({ ...plantData, fertilizers: false })
+                  }
+                  className="w-4 h-4 text-red-500 focus:ring-2 focus:ring-red-400"
+                />
+                <span className="text-gray-700">No</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Soil Level */}
+          <div className="mb-4">
+            <label className="block text-gray-600 font-medium">
+              Soil Level Maintained:
+            </label>
+            <div className="flex justify-center gap-6">
+              <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition ease-in-out duration-200">
+                <input
+                  type="radio"
+                  name="soilLevel"
+                  value="yes"
+                  checked={plantData.soilLevel === true}
+                  onChange={() =>
+                    setPlantData({ ...plantData, soilLevel: true })
+                  }
+                  className="w-4 h-4 text-blue-500 focus:ring-2 focus:ring-blue-400"
+                />
+                <span className="text-gray-700">Yes</span>
+              </label>
+              <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition ease-in-out duration-200">
+                <input
+                  type="radio"
+                  name="soilLevel"
+                  value="no"
+                  checked={plantData.soilLevel === false}
+                  onChange={() =>
+                    setPlantData({ ...plantData, soilLevel: false })
+                  }
+                  className="w-4 h-4 text-red-500 focus:ring-2 focus:ring-red-400"
+                />
+                <span className="text-gray-700">No</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Tree Burnt */}
+          <div className="mb-4">
+            <label className="block text-gray-600 font-medium">
+              Tree Burnt:
+            </label>
+            <div className="flex justify-center gap-6">
+              <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition ease-in-out duration-200">
+                <input
+                  type="radio"
+                  name="treeBurnt"
+                  value="yes"
+                  checked={plantData.treeBurnt === true}
+                  onChange={() =>
+                    setPlantData({ ...plantData, treeBurnt: true })
+                  }
+                  className="w-4 h-4 text-blue-500 focus:ring-2 focus:ring-blue-400"
+                />
+                <span className="text-gray-700">Yes</span>
+              </label>
+              <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition ease-in-out duration-200">
+                <input
+                  type="radio"
+                  name="treeBurnt"
+                  value="no"
+                  checked={plantData.treeBurnt === false}
+                  onChange={() =>
+                    setPlantData({ ...plantData, treeBurnt: false })
+                  }
+                  className="w-4 h-4 text-red-500 focus:ring-2 focus:ring-red-400"
+                />
+                <span className="text-gray-700">No</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Unwanted Grass */}
+          <div className="mb-4">
+            <label className="block text-gray-600 font-medium">
+              Unwanted Grass:
+            </label>
+            <div className="flex justify-center gap-6">
+              <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition ease-in-out duration-200">
+                <input
+                  type="radio"
+                  name="unwantedGrass"
+                  value="yes"
+                  checked={plantData.unwantedGrass === true}
+                  onChange={() =>
+                    setPlantData({ ...plantData, unwantedGrass: true })
+                  }
+                  className="w-4 h-4 text-blue-500 focus:ring-2 focus:ring-blue-400"
+                />
+                <span className="text-gray-700">Yes</span>
+              </label>
+              <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition ease-in-out duration-200">
+                <input
+                  type="radio"
+                  name="unwantedGrass"
+                  value="no"
+                  checked={plantData.unwantedGrass === false}
+                  onChange={() =>
+                    setPlantData({ ...plantData, unwantedGrass: false })
+                  }
+                  className="w-4 h-4 text-red-500 focus:ring-2 focus:ring-red-400"
+                />
+                <span className="text-gray-700">No</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Water Logging */}
+          <div className="mb-4">
+            <label className="block text-gray-600 font-medium">
+              Water Logging:
+            </label>
+            <div className="flex justify-center gap-6">
+              <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition ease-in-out duration-200">
+                <input
+                  type="radio"
+                  name="waterLogging"
+                  value="yes"
+                  checked={plantData.waterLogging === true}
+                  onChange={() =>
+                    setPlantData({ ...plantData, waterLogging: true })
+                  }
+                  className="w-4 h-4 text-blue-500 focus:ring-2 focus:ring-blue-400"
+                />
+                <span className="text-gray-700">Yes</span>
+              </label>
+              <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition ease-in-out duration-200">
+                <input
+                  type="radio"
+                  name="waterLogging"
+                  value="no"
+                  checked={plantData.waterLogging === false}
+                  onChange={() =>
+                    setPlantData({ ...plantData, waterLogging: false })
+                  }
+                  className="w-4 h-4 text-red-500 focus:ring-2 focus:ring-red-400"
+                />
+                <span className="text-gray-700">No</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Compound */}
+          <div className="mb-4">
+            <label className="block text-gray-600 font-medium">
+              Compound Maintained:
+            </label>
+            <div className="flex justify-center gap-6">
+              <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition ease-in-out duration-200">
+                <input
+                  type="radio"
+                  name="compound"
+                  value="yes"
+                  checked={plantData.compound === true}
+                  onChange={() =>
+                    setPlantData({ ...plantData, compound: true })
+                  }
+                  className="w-4 h-4 text-blue-500 focus:ring-2 focus:ring-blue-400"
+                />
+                <span className="text-gray-700">Yes</span>
+              </label>
+              <label className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 p-2 rounded-lg transition ease-in-out duration-200">
+                <input
+                  type="radio"
+                  name="compound"
+                  value="no"
+                  checked={plantData.compound === false}
+                  onChange={() =>
+                    setPlantData({ ...plantData, compound: false })
+                  }
+                  className="w-4 h-4 text-red-500 focus:ring-2 focus:ring-red-400"
+                />
+                <span className="text-gray-700">No</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Water Schedule */}
+          <div>
+            <label className="block text-gray-600 font-medium">
+              Water Schedule
+            </label>
+            <select
+              name="waterSchedule"
+              value={plantData.waterSchedule}
+              onChange={handleInputChange}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+            >
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="alternate">Alternate Days</option>
+            </select>
+          </div>
+
           <button
             type="submit"
             className="w-full py-3 text-white font-semibold bg-green-600 rounded-lg hover:bg-green-700 transition duration-200"
